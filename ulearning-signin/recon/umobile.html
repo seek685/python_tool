@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang=zh-CN dir=ltr><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=format-detection content="telephone=no"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"><title>ULearning</title><script src=./static/cordova/cordova_init.js></script><script>window.localStorage.setItem('loadTime', new Date().getTime())
+      console.log('html-get')</script><link rel=stylesheet href=//at.alicdn.com/t/c/font_635017_nt2k9to9y7.css><script src=//at.alicdn.com/t/c/font_635017_nt2k9to9y7.js></script><link type=favicon rel=icon href=static/favicon.ico><script>window.globalThis = {}
+      if (window.location.href.indexOf('timestamp') == -1) {
+        location.href =
+          location.origin +
+          location.pathname +
+          '?timestamp=' +
+          new Date().getTime() +
+          location.hash
+      }</script><script src=./static/jquery-1.12.4/jquery.min.js></script><link rel=stylesheet href=./static/wPaint/wPaint-min.css><script src=./static/wPaint/wPaint-min.js></script><script src=./static/js/hwh5-cloudonline.js></script><script src=./static/js/jweixin-1.4.0.js></script><style>html,
+      body{
+        overflow: hidden;
+        word-break: break-all;
+      }
+      html,
+      body,
+      #app {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+      }
+      .d2-home {
+        background-color: #ffffff;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .d2-home__main {
+        user-select: none;
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .d2-home__loading {
+        height: 32px;
+        width: 32px;
+        margin-bottom: 20px;
+      }
+      .d2-home__title {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .d2-home__sub-title {
+        color: #ababab;
+        font-size: 12px;
+        padding: 20px;
+      }
+      .cube-picker-panel {
+        height: 248px !important;
+      }
+      .cube-picker-choose {
+        height: 48px !important;
+        line-height: 48px !important;
+        background: #f5f5f5;
+      }
+      .cube-picker-confirm,
+      .cube-picker-cancel {
+        line-height: 48px !important;
+      }
+      .cube-picker-title {
+        font-size: 16px !important;
+        color: #444 !important;
+      }
+      .cube-picker-wheel-item {
+        height: 40px !important;
+        font-size: 15px;
+        color: #444 !important;
+      }
+      .cube-switch .cube-switch-input:checked + .cube-switch-ui {
+        border-color: #b4b4f6 !important;
+        background-color: #b4b4f6 !important;
+      }
+      .page-score-rule .content-container {
+        background: #f5f5f5;
+      }
+      .vote-detial .cube-tab-bar {
+        justify-content: left;
+        padding: 16px;
+      }
+      .vote-detial .cube-tab {
+        width: 48px;
+        height: 48px;
+        border-radius: 48px;
+        border: 1px solid #dedede;
+        display: inline-block;
+        flex: inherit;
+        line-height: 48px;
+        color: #969696;
+        padding: 0;
+        margin-right: 10px;
+      }
+      .vote-detial .cube-tab div {
+        color: #969696;
+      }
+      .vote-detial .cube-tab.cube-tab_active {
+        background: #ea5947;
+        border: none;
+      }
+      .vote-detial .cube-tab.cube-tab_active div {
+        color: #fff;
+      }
+      .vote-detial .tab-slide-container {
+        padding: 0 16px;
+      }</style></head><body><div id=app><div class=d2-home><div class=d2-home__main><img class=d2-home__loading src=./static/loading/loading-spin.svg alt=loading></div></div></div><script>function getCookie (c_name) {
+        if (document.cookie.length > 0) {
+          var c_start = document.cookie.indexOf(c_name + '=')
+          if (c_start != -1) {
+            c_start = c_start + c_name.length + 1
+            var c_end = document.cookie.indexOf(';', c_start)
+            if (c_end == -1) c_end = document.cookie.length
+            return unescape(document.cookie.substring(c_start, c_end).replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent))
+          }
+        }
+        return ''
+      }
+      function getUrlHashParam(paraName) {
+        let arrObj = window.location.hash.split('?')
+        if(arrObj.length>1){
+          var arrPara = arrObj[1].split('&')
+          var arr
+          for (var i = 0; i < arrPara.length; i++) {
+            arr = arrPara[i].split('=')
+
+            if (arr != null && arr[0] == paraName) {
+              return arr[1]
+            }
+          }
+          return ''
+        }else {
+          return ''
+        }
+      }
+      var newLocale = getUrlHashParam("language") || getCookie('lang') || navigator.language || navigator.browserLanguage
+      if (navigator.userAgent.indexOf('umoocApp') !== -1) {
+        var ua = window.navigator.userAgent.indexOf('-language-') != -1 ? window.navigator.userAgent : ''
+        var start = ua.indexOf('-language-') + '-language-'.length
+        var end = ua.indexOf(' ', start)
+        end = end == -1 ? ua.length : end
+        try {
+          newLocale = ua.substring(start, end) || navigator.language || navigator.browserLanguage
+        } catch (e) {}
+      }
+      newLocale = newLocale.toLowerCase()
+      const langMap = {
+        "zh-TW": ['tw', 'hk'],
+        en: ['en'],
+        th: ['th'],
+        es: ['es'],
+        ar: ['ar'],
+        id: ['id'],
+        'zh-CN': ['zh'],
+        fr: ['fr'],
+        pt: ['pt'],
+        ru: ['ru']
+      }
+      let langKey = "zh"
+      for(let key in langMap) {
+        const arr = langMap[key].filter(it => newLocale.indexOf(it) !== -1)
+        if (arr.length > 0) {
+          console.log("key",key);
+          langKey = key
+          break
+        }
+      }
+      if(newLocale.indexOf('ar') > -1){
+        document.documentElement.setAttribute('dir', 'rtl')
+      }
+      newLocale = langKey
+      var lang = {
+        en: {
+          'init-loading': 'Loading resources',
+          'init-waitting': 'It may take more time to load resources for the first time, please be patient'
+        },
+        id: {
+          'init-loading': 'Memuat sumber daya',
+          'init-waitting': 'Mungkin butuh lebih banyak waktu untuk memuat sumber daya untuk pertama kalinya, harap bersabar'
+        },
+        es: {
+          'init-loading': 'Cargando recursos',
+          'init-waitting': 'La carga inicial de los recursos puede tardar más tiempo Por favor sea paciente'
+        },
+        ar: {
+          'init-loading': 'تحميل الموارد',
+          'init-waitting': 'التحميل الأولي للموارد قد يستغرق المزيد من الوقت يرجى أن يكون المريض'
+        },
+        th: {
+          'init-loading': '正在加载资源',
+          'init-waitting': '初次加载资源可能需要较多时间 请耐心等待'
+        },
+        'zh-TW': {
+          'init-loading': '正在加載資源',
+          'init-waitting': '初次加載資源可能需要較多時間 請耐心等待'
+        },
+        'zh-CN': {
+          'init-loading': '正在加载资源',
+          'init-waitting': '初次加载资源可能需要较多时间 请耐心等待'
+        },
+        fr: {
+          'init-loading': 'Chargement des ressources',
+          'init-waitting': 'Cela peut prendre plus de temps pour charger des ressources pour la première fois, s’il vous  plaît soyez patient'
+        },
+        pt: {
+          'init-loading': 'Carregando recursos',
+          'init-waitting': 'Pode demorar mais para Carregar recurso na primeira vez. Por favor, espere.'
+        },
+        ru: {
+          'init-loading': 'Загрузка ресурсов',
+          'init-waitting': 'Загрузка ресурсов может занять много времени при первом запуске. Пожалуйста, подождите.'
+        },
+      }
+      $('.i18n').each(function () {
+        var key = $(this).data('i18n')
+        $(this).text(lang[newLocale][key] || key)
+      })
+
+      setTimeout(function () {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.id = "xiaonengjs";
+        script.src = "//visitor.ntalker.com/visitor/js/xiaoneng.js?siteid=kf_20125";
+        script.async = "async";
+        document.body.appendChild(script);
+      }, 1000);</script><script type=text/javascript src=./static/js/manifest.40a2b5ddf5bce054a421.js></script><script type=text/javascript src=./vender.42de554f.js></script><script type=text/javascript src=./static/js/app.8fe085d050dc3b4ddb46.js></script></body></html>
