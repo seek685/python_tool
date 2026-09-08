@@ -40,8 +40,8 @@ CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 NOTICE = """注意事项:
 1. 本工具仅用于老师布置的求是读书计划测试, 请勿用于其他用途。
 2. 账号填学号即可 (自动补 dgut 前缀), 密码是应用中心网页的登录密码。
-3. 课程URL填"教材"页地址 (含 courseId 的整段链接), 书目与老师页面看到的一致;
-   不填则默认求是读书计划 (courseId=158753)。
+3. 课程URL: 填"教材"页地址 (书目与老师教学计划一致) 或阅读播放器链接
+   (书目为总库口径) 都可以; 不填则默认求是读书计划 (courseId=158753)。
 4. 时长按小时填, 支持小数; 列表里每本书后面显示的是服务器端当前已读时长。
 5. 请关闭代理/VPN, 程序需要直连学校服务器。"""
 
@@ -103,17 +103,25 @@ class ReadingAPI:
                 items.append((it["itemId"], (it.get("title") or "").strip()))
         return items
 
-    def page_map(self, player_course_id, class_id):
-        """播放器目录: itemid -> 电子书页 id"""
-        r = self.session.get(f"{UA}/course/{player_course_id}/directory?classId={class_id}",
-                             headers=self._h(), timeout=20)
-        m = {}
+    def player_directory_items(self, player_course_id, class_id):
+        """播放器完整目录: [(itemid, pageid, title)] (书目总库口径)"""
+        url = f"{UA}/course/{player_course_id}/directory"
+        if class_id:
+            url += f"?classId={class_id}"
+        r = self.session.get(url, headers=self._h(), timeout=20)
+        items = []
         for ch in (r.json().get("chapters") or []):
             for item in ch.get("items") or []:
                 pages = [p for p in (item.get("coursepages") or []) if p.get("type") == 11]
                 if pages:
-                    m[item["itemid"]] = pages[0]["id"]
-        return m
+                    items.append((item["itemid"], pages[0]["id"],
+                                  (item.get("title") or "").strip()))
+        return items
+
+    def page_map(self, player_course_id, class_id):
+        """播放器目录: itemid -> 电子书页 id"""
+        return {iid: pid for iid, pid, _ in
+                self.player_directory_items(player_course_id, class_id)}
 
     def get_study_time(self, item_id):
         """返回该 item 服务器端累计 studyTime(秒), 无记录返回 0"""
@@ -328,7 +336,12 @@ class App(tk.Tk):
                          daemon=True).start()
 
     def _load_worker(self, username, password, course_id, class_id):
-        ok, msg = self.api.login(username, password)
+        try:
+            ok, msg = self.api.login(username, password)
+        except Exception as e:
+            self.log(f"登录请求异常: {e}, 请检查网络后重试")
+            self.ctrl_queue.put("STOPPED")
+            return
         self.log(msg)
         if not ok:
             self.ctrl_queue.put("STOPPED")
@@ -337,23 +350,38 @@ class App(tk.Tk):
             if not class_id:
                 class_id = self.api.course_class_id(course_id)
                 self.log(f"自动获取 classId = {class_id}")
-            tb_id = self.api.textbook_id(course_id)
-            if not tb_id:
-                self.log("该课程没有教材, 检查课程 URL")
-                self.ctrl_queue.put("STOPPED")
-                return
-            ui_items = self.api.textbook_directory(course_id, class_id, tb_id)
-            pmap = self.api.page_map(tb_id, class_id)
+
+            items = None
+            source = ""
+            # 优先按"教材页"口径 (教学计划下发的书目)
+            if class_id:
+                try:
+                    tb_id = self.api.textbook_id(course_id)
+                    if tb_id:
+                        ui_items = self.api.textbook_directory(course_id, class_id, tb_id)
+                        pmap = self.api.page_map(tb_id, class_id)
+                        items = [(iid, pmap.get(iid), title) for iid, title in ui_items]
+                        source = "教材页教学计划书目"
+                except Exception:
+                    items = None
+            # 兜底: 播放器完整书目 (粘贴的是播放器链接 / 课程未配教材时)
+            if items is None:
+                items = self.api.player_directory_items(course_id, class_id)
+                source = "播放器完整书目 (教材页无教材或粘的是播放器链接)"
+
             self.books = []
             skipped = 0
-            for item_id, title in ui_items:
-                pid = pmap.get(item_id)
+            for item_id, pid, title in items:
                 if pid:
                     self.books.append((item_id, pid, title))
                 else:
                     skipped += 1
-            self.log(f"书目加载完成, 共 {len(self.books)} 本 (与教材页一致"
-                     + (f", {skipped} 本无电子书页已跳过)" if skipped else ")"))
+            if not self.books:
+                self.log("没有加载到任何书目, 请检查课程 URL 是否正确")
+                self.ctrl_queue.put("STOPPED")
+                return
+            self.log(f"书目加载完成, 共 {len(self.books)} 本 [{source}]"
+                     + (f", {skipped} 本无电子书页已跳过" if skipped else ""))
             # 拉取每本书的当前已读时长
             times = []
             for n, (item_id, _, title) in enumerate(self.books):
