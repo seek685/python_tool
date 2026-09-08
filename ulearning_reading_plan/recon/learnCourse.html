@@ -1,0 +1,1029 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+
+  <!-- 禁用缓存 -->
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Ulearning</title>
+  <meta name="description" content="UA 课程学习页面">
+  <link rel="stylesheet" href="./3rdlib/loaders.css-0.1.2/loaders.min.css">
+  <link rel="stylesheet" href="./3rdlib/bootstrap-3.3.7/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="./3rdlib/Swiper-2.7.6/idangerous.swiper.min.css"> -->
+  <link rel="stylesheet" href="./3rdlib/perfect-scrollbar-0.8.1/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="./3rdlib/dragula-3.7.2/dragula.min.css">
+  <link rel="stylesheet" href="./3rdlib/photoswipe/dist/photoswipe.css">
+  <link rel="stylesheet" href="./3rdlib/photoswipe/dist/default-skin/default-skin.css">
+  <link rel="stylesheet" href="./3rdlib/jquery-confirm-3.3.4/jquery-confirm.min.css">
+  <link rel="stylesheet" href="./3rdlib/select2/css/select2.min.css">
+  <link rel="stylesheet" href="./font/iconfont.css">
+  <style>
+    .view-loader {
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+    }
+
+    .view-loader .loader-inner {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 50px;
+      text-align: center;
+    }
+
+    .view-loader .loader-inner div {
+      background: #ea5947;
+    }
+
+    .view-loader .save-tip {
+      display: none;
+      margin-top: 10px;
+    }
+    .largeFor4k {
+      transform: scale(2);
+      -webkit-transform-origin-x: left;
+      -webkit-transform-origin-y: top;
+      max-width: 1536px;
+      max-height: 946px;
+    }
+  </style>
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body data-bind="css: { 'preview-mode': isPreviewMode() && !mobileMode,
+  'audition-mode': isAuditionMode(),
+  'expired-mode': isExpiredMode() || !isActivation(),
+  'en': course.locale() == 'en',
+  'full-screen': $root.isFullScreen(),
+  'ios-platform': $root.platType == 'ios-platform',
+  'wx-mimi-program': isWxMiniProgram(),
+  'largeFor4k': isOpsFor4k,
+  'h5-mode': mobileMode && !appMode,
+  'h5-save-tips': !isPreviewMode() && !isExpiredMode() && mobileMode && !appMode
+}">
+  <!--[if lte IE 9]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+  <div class="view-loader">
+    <div class="loader-inner line-scale">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <span class="save-tip" data-bind="text: $root.i18nMsgText().savingRecord">正在保存学习记录，请稍候</span>
+    </div>
+  </div>
+  <!-- ko if: !isPreviewMode() && !isExpiredMode() && mobileMode && !appMode -->
+  <div class="save-tips"><span data-bind="text:$root.i18nMsgText().saveRecordTips1">学习进度每隔2分钟系统自动保存一次，学习完成请手动保存后再退出页面，以防学习数据丢失。</span> <a href="javascript:;" data-bind="text:$root.i18nMsgText().saveRecordTips2, click: userSaveRecord">保存进度</a> </div>
+  <!-- /ko -->
+  <div class="notice-area">
+    <!-- ko if: isExpiredMode() -->
+    <!-- ko if: isExpiredMode() == 2 -->
+    <!-- ko if: !mobileMode -->
+    <span data-bind="text: $root.i18nMsgText().expiredCourseStudyTip2">当前章节已过期，可以继续浏览，但不保存记录。</span>
+    <!-- /ko -->
+    <!-- ko if: mobileMode -->
+    <span data-bind="text: $root.i18nMsgText().expiredCourseStudyTipMobile2">此章节已过期，可继续浏览，但不保存记录。</span>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: isExpiredMode() != 2 -->
+    <!-- ko if: !mobileMode -->
+    <span data-bind="text: $root.i18nMsgText().expiredCourseStudyTip">此课程已过期，您可以继续浏览之前的学习记录，但新的记录不会被保存。</span>
+    <!-- /ko -->
+    <!-- ko if: mobileMode -->
+    <span data-bind="text: $root.i18nMsgText().expiredCourseStudyTipMobile">此课程已过期，可继续浏览，但不保存记录。</span>
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: !isActivation() -->
+    <span data-bind="text: $root.i18nMsgText().notOpenedCourse">你还没有开通该课程，请先加入或激活课程。</span>
+    <!-- /ko -->
+  </div>
+  <!-- 页面头部 -->
+  <!-- ko ifnot: mobileMode && !appMode -->
+  <div class="header">
+    <div class="operating-area">
+      <div class="chapter-progress" data-bind="style: { width: chapterProgress() + '%' }"></div>
+      <div class="back-btn control-btn cursor" data-bind="css: { 'return-url': returnUrl }, click: $root.goBack"
+        role="button" href="javascript:;" aria-label="返回">
+        <i class="iconfont">&#xe907;</i>
+        <!-- ko ifnot: isPreviewMode() || isTeacherDevelopment || showExit() -->
+        <span class="back btn-text" data-bind="text: i18nMessageText().backToCourse"></span>
+        <!-- /ko -->
+        <!-- ko if: isPreviewMode() || isTeacherDevelopment || showExit() -->
+        <span class="exit btn-text" data-bind="text: i18nMessageText().exit"></span>
+        <!-- /ko -->
+      </div>
+      <div class="hide-catalog-btn control-btn cursor"
+        data-bind="css: { 'return-url': returnUrl, 'effective': isMenuPack() }, click: $root.toggleCatalog">
+        <div class="pack">
+          <i class="iconfont">&#xe83e;</i><span class="btn-text" data-bind="text: i18nMessageText().hideCatalog"></span>
+        </div>
+        <div class="unpack">
+          <i class="iconfont">&#xe7b6;</i><span class="btn-text" data-bind="text: i18nMessageText().showCatalog"></span>
+        </div>
+      </div>
+      <div class="course-title small" data-bind="text: currentPage() ? currentPage().name() :
+        sectionStatPage() && currentSection() ? currentSection().name() :
+        chapterStatPage() && currentChapter() ? currentChapter().name() : ''">
+      </div>
+      <!-- ko if: !is3rdMode && !isI18n -->
+      <div class="custom-service" data-bind="click: showCustomService" role="button" aria-label="咨询客服">
+        <i class="iconfont">&#xe986;</i>
+        <div class="custom-service-text" data-bind="text: $root.i18nMsgText().customerService">咨询客服</div>
+      </div>
+      <!-- /ko -->
+      <!-- <a class="test-url" style="position:fixed; top:64px; right:32px;" data-bind="attr: { 'href': localUrl }">测试用地址，勿点</a> -->
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- 页头 结束 -->
+  <!-- 页面主体 -->
+  <div class="course-container container-fluid full-height">
+    <div class="row full-height">
+      <div class="catalog-col full-height" data-bind="css:{'pack-up':isMenuPack()}">
+        <div class="catalog-list-scroller">
+          <div class="catalog-list" data-bind="foreach: { data: course.chapters(), as: 'chapter' }">
+            <div class="chapter-item" data-bind="visible: !$root.appMode || $root.appMode && (!$root.currentChapter() || $root.currentChapter() == chapter) ,attr: { id: 'chapter' + chapter.id() }, css: {
+                  'audition': chapter.isAudition()
+                }">
+              <div class="chapter-name cursor" data-bind="click: $root.clickTreeNode">
+                <div class="text" data-bind="text: chapter.name()"></div>
+                <i class="iconfont">&#xe8af;</i>
+              </div>
+              <div class="section-list" data-bind="foreach: { data: sections(), as: 'section' }">
+                <div class="section-item" data-bind="attr: { id: 'section' + section.id() },
+                      css: {
+                        'audition' : !chapter.isAudition() && section.isAudition(),
+                        'is-hide' : chapter.isHide() || section.isHide()
+                      }">
+                  <div class="section-name cursor" data-bind="click: $root.clickTreeNode">
+                    <div class="text" data-bind="text: section.name()"></div>
+                    <i class="iconfont">&#xe8af;</i>
+                  </div>
+                  <div class="page-list" data-bind="foreach: { data: pages(), as: 'page' }">
+                    <div class="page-item" data-bind="attr: { id: 'page' + page.id() },
+                      css: {
+                        'is-hide' : page.isHide()
+                      }"">
+                      <div class=" page-name cursor" data-bind="css: {
+                            active: $root.currentPage() == page,
+                            complete: page.record().status() && !$root.isAuditionMode()
+                          }, click: $root.selectPage.bind($data, page, section, chapter)">
+                      <div class="text">
+                        <div class="page-icon">
+                          <!-- ko if: (!page.record().status() || $root.isAuditionMode()) && page.contentType() == 5 -->
+                          <i class="iconfont">&#xe851;</i>
+                          <!-- /ko -->
+                          <!-- ko if: (!page.record().status() || $root.isAuditionMode()) && page.contentType() == 6 -->
+                          <i class="iconfont">&#xe852;</i>
+                          <!-- /ko -->
+                          <!-- ko if: (!page.record().status() || $root.isAuditionMode()) && page.contentType() == 7 -->
+                          <i class="iconfont">&#xe850;</i>
+                          <!-- /ko -->
+                          <!-- ko if: page.record().status() && !$root.isAuditionMode() -->
+                          <i class="iconfont finish">&#xe83d;</i>
+                          <!-- /ko -->
+                        </div>
+                        <span class="" data-bind="text: page.name()"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- .page-list end -->
+              </div>
+            </div>
+            <!-- .section-list end -->
+          </div>
+        </div>
+      </div>
+      <!-- .catalog-list end -->
+      <div class="mobile-catalog-close" data-bind="click: $root.toggleCatalog">
+        <i class="iconfont">&#xe908;</i> <span data-bind="text: $root.i18nMsgText().collapseCatalog">收起目录</span>
+      </div>
+      </div>
+      <div class="page-col full-height"  data-bind="css:{'full':isMenuPack()}">
+        <div class="page-container" id="aiPanel">
+          <div class="page-scroller">
+            <!-- ko if: $root.loadFailed() -->
+            <div class="page-content load-failed-page">
+              <img src="./img/load_failed.png" />
+              <span data-bind="text: $root.i18nMsgText().loadCourseError">页面内容加载失败，请检查网络设置或重新加载。</span>
+              <button class="btn-hollow" type="button"
+                data-bind="text: $root.i18nMsgText().reload, click: $root.refresh">重新加载</button>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $root.loadFailed() -->
+            <!-- ko if: $root.currentPage() -->
+            <!-- ko if: !$root.isAuditionMode() && $root.currentPage().isHide() -->
+            <div class="page-content hide-page">
+              <img src="./img/hiddenPage.png" />
+              <span data-bind="text: $root.i18nMessageText().hiddenPage"></span>
+              <div class="learn-other-course">
+                <button class="button-empty"
+                  data-bind="click:toggleCatalog, text: $root.i18nMsgText().learnOtherPage">学习其他页面</button>
+              </div>
+              <p class="reason-hide-page">
+                <span data-bind="text: $root.i18nMsgText().hideReason">无法学习的原因</span>
+                <br /> 1.<span
+                  data-bind="text: $root.i18nMsgText().hideReason1">教师设置了学习计划，只能在指定时间段内学习该页面内容，具体的学习时间请留意任课教师通知;</span>
+                <br /> 2.<span data-bind="text: $root.i18nMsgText().hideReason2">该页面不需要学习，教师永久性隐藏了该页面。</span>
+                <br /><span data-bind="text: $root.i18nMsgText().hideReason3">具体原因请咨询任课教师。</span>
+              </p>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $root.isAuditionMode() && !$root.currentPage().isAudition() -->
+            <div class="page-content not-audition-page">
+              <img src="./img/hiddenPage.png" />
+              <span data-bind="text: $root.i18nMessageText().notAuditionPage"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: (!$root.isAuditionMode() && $root.currentPage().isHide()) || ($root.isAuditionMode() && !$root.currentPage().isAudition()) -->
+            <!-- ko if: $root.currentPage().isLoaded() -->
+            <div class="page-content" id="MathDiv" data-bind='component: {
+                    name: "page-component",
+                    params: { page: $root.currentPage() }
+                  }'></div>
+            <!-- /ko -->
+            <!-- ko ifnot: $root.currentPage().isLoaded() -->
+            <div class="page-loader">
+              <div class="loader-inner line-scale"></div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+          </div>
+          <div class="page-control-area">
+            <div class="operating-area" data-bind="css: { 'active': !$root.isFullScreen() }">
+              <div class="prev-page-btn cursor" data-bind="click: goPreviousPage">
+                <!-- ko ifnot: $root.prevPageName() == $root.i18nMessageText().noMore -->
+                <div class="btn-tip">
+                  <i class="iconfont">&#xe846;</i><span data-bind="text: i18nMessageText().previousPage"></span>
+                </div>
+                <!-- /ko -->
+                <div class="page-title-wrapper">
+                  <div class="page-title">
+                    <div class="middle-text">
+                      <span class="text" data-bind="text: $root.prevPageName()"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="next-page-btn cursor" data-bind="click: goNextPage">
+                <!-- ko ifnot: $root.nextPageName() == $root.i18nMessageText().noMore -->
+                <div class="btn-tip">
+                  <span data-bind="text: i18nMessageText().nextPage"></span><i class="iconfont">&#xe847;</i>
+                </div>
+                <!-- /ko -->
+                <div class="page-title-wrapper">
+                  <div class="page-title">
+                    <div class="middle-text">
+                      <span class="text" data-bind="text: $root.nextPageName()"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ko ifnot: $root.prevPageName() == $root.i18nMessageText().noMore -->
+              <div class="mobile-prev-page-btn" data-bind="click: goPreviousPage"><i class="iconfont">&#xe909;</i><span
+                  data-bind="text: i18nMessageText().previousPage"></span></div>
+              <!-- /ko -->
+              <div class="mobile-chapter-progress-area" data-bind="click: $root.toggleCatalog">
+                <span data-bind="text: i18nMessageText().catalog1">目录：</span><span
+                  data-bind="text: $root.getPageCount()"></span>
+              </div>
+              <!-- ko ifnot: $root.nextPageName() == $root.i18nMessageText().noMore -->
+              <div class="mobile-next-page-btn" data-bind="click: goNextPage"><span
+                  data-bind="text: i18nMessageText().nextPage"></span><i class="iconfont">&#xe90b;</i></div>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- .page-control-area end -->
+        </div>
+      </div>
+    <!-- .page-col end -->
+    </div>
+  </div>
+  <!-- 页面主体 结束 -->
+  <!-- 统计弹框 -->
+  <div class="modal fade" id="statModal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <!-- ko ifnot: $root.mobileMode -->
+          <!-- ko if: $root.sectionStatPage() -->
+          <div class="stat-page" data-bind="css: { 'complete': $root.currentSection().record().status() }">
+            <div class="stat-data-area">
+              <img class="back complete" src="./img/modal_section_complete.png" />
+              <img class="back incomplete" src="./img/modal_section_incomplete.png" />
+              <div class="stat-data">
+                <div class="data-block">
+                  <div class="data"><span data-bind="text: $root.sectionStatData().sectionProgress"></span>%</div>
+                  <div class="data-type">
+                    <i class="iconfont">&#xe85c;</i><span class="text"
+                      data-bind="text: i18nMessageText().studyProgress"></span>
+                  </div>
+                </div>
+                <div class="data-block">
+                  <div class="data" data-bind="i18n: i18nMessageText().score, places: { n: $root.sectionStatData().totalScore }"></div>
+                  <div class="data-type">
+                    <i class="iconfont">&#xe833;</i><span class="text"
+                      data-bind="text: i18nMessageText().sectionScore"></span>
+                  </div>
+                </div>
+                <div class="data-block last">
+                  <div class="data" data-bind="text: $root.sectionStatData().totalStudyTime"></div>
+                  <div class="data-type">
+                    <i class="iconfont">&#xe85d;</i><span class="text"
+                      data-bind="text: i18nMessageText().studyTime"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-message text-default">
+              <div class="complete">
+                <span class="" data-bind="text: i18nMessageText().completeSection"></span>
+              </div>
+              <div class="incomplete">
+                <span class="" data-bind="text: i18nMessageText().incompleteSection1"></span>
+                <br />
+                <span class="" data-bind="text: i18nMessageText().incompleteSection2"></span>
+              </div>
+            </div>
+            <div class="stat-next">
+              <button class="btn-hollow" data-bind="click: reviewSection" type="button"><span
+                  class="arrow-left">&lt;&lt;</span> <span data-bind="text: i18nMessageText().stayHere"></span></button>
+              <button class="btn-hollow"
+                data-bind="click: goNextPage, css : { 'section-stat': $root.nextPageName() == $root.i18nMessageText().chapterSummary }"
+                type="button"><span
+                  data-bind="text: $root.nextPageName() == $root.i18nMessageText().chapterSummary ? $root.i18nMessageText().chapterSummary : $root.i18nMessageText().nextSection"></span>
+                <span class="arrow-right">&gt;&gt;</span></button>
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- ko if: $root.chapterStatPage() -->
+          <div class="stat-page chapter-stat" data-bind="css: { 'complete': $root.chapterProgress() == 100 }">
+            <div class="stat-data-area">
+              <img class="back complete" src="./img/modal_chapter_complete.png" />
+              <img class="back incomplete" src="./img/modal_chapter_incomplete.png" />
+              <div class="stat-data">
+                <div class="data-block">
+                  <div class="data" data-bind="i18n: i18nMessageText().score, places: { n: $root.chapterStatData().totalScore }"></div>
+                  <div class="data-type">
+                    <i class="iconfont">&#xe85c;</i><span class="text"
+                      data-bind="text: i18nMessageText().chapterScore"></span>
+                  </div>
+                </div>
+                <div class="data-block circle">
+                  <img class="star-back" src="./img/modal_star.png" />
+                  <!-- <div class="circle-out">
+                    <div class="circle-in"> -->
+                  <div class="star">
+                    <canvas id="waveCanvas" width="60" height="60"></canvas>
+                  </div>
+                  <div class="text-percent"><span data-bind="text: $root.chapterStatData().chapterProgress"></span><span
+                      class="small">%</span></div>
+                  <!-- </div>
+                  </div> -->
+                </div>
+                <div class="data-block last">
+                  <div class="data" data-bind="text: $root.chapterStatData().totalStudyTime"></div>
+                  <div class="data-type">
+                    <i class="iconfont">&#xe85d;</i><span class="text"
+                      data-bind="text: i18nMessageText().totalStudyTime"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-message text-default">
+              <div class="complete">
+                <!-- ko if: $root.nextPageFamily().page -->
+                <span class="" data-bind="text: i18nMessageText().completeChapter1"></span>
+                <br />
+                <span class="" data-bind="text: i18nMessageText().completeChapter2"></span>
+                <!-- /ko -->
+                <!-- ko ifnot: $root.nextPageFamily().page -->
+                <span class="" data-bind="text: i18nMessageText().completeChapter3"></span>
+                <!-- /ko -->
+              </div>
+              <div class="incomplete">
+                <!-- ko if: $root.nextPageFamily().page -->
+                <span class="" data-bind="text: i18nMessageText().incompleteChapter"></span>
+                <!-- /ko -->
+                <!-- ko ifnot: $root.nextPageFamily().page -->
+                <span class="" data-bind="text: i18nMessageText().incompleteChapter2"></span>
+                <!-- /ko -->
+              </div>
+            </div>
+            <div class="stat-next">
+              <button class="btn-hollow" data-bind="click: reviewChapter" type="button"><span
+                  class="arrow-left">&lt;&lt;</span> <span data-bind="text: i18nMessageText().stayHere"></span></button>
+              <!-- ko if: $root.nextPageFamily().page -->
+              <button class="btn-hollow" data-bind="click: goNextPage" type="button"><span
+                  data-bind="text: i18nMessageText().nextChapter"></span> <span
+                  class="arrow-right">&gt;&gt;</span></button>
+              <!-- /ko -->
+              <!-- ko ifnot: $root.nextPageFamily().page -->
+              <button class="btn-hollow" data-bind="click: closeStatPage" type="button"><span
+                  data-bind="text: i18nMessageText().close"></span></button>
+              <!-- /ko -->
+            </div>
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- ko if: $root.mobileMode && ($root.sectionStatPage() || $root.chapterStatPage()) -->
+          <div class="stat-page"
+            data-bind="css: { 'complete': ($root.sectionStatPage() && $root.currentSection().record().status()) || ($root.chapterStatPage() && $root.chapterProgress() == 100) }">
+            <div class="stat-header">
+              <img class="back complete" src="./img/mobileStatComplete.png" />
+              <img class="back incomplete" src="./img/mobileStatIncomplete.png" />
+            </div>
+            <div class="white-bg">
+              <div class="stat-content">
+                <!-- ko if: $root.sectionStatPage() -->
+                <div class="complete red-info info-block">
+                  <span class="" data-bind="text: i18nMessageText().completeSection"></span>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $root.chapterStatPage() -->
+                <div class="complete info-block">
+                  <span class="red-info" data-bind="text: $root.i18nMsgText().finishChapterStudy">恭喜你完成本章</span>
+                </div>
+                <!-- /ko -->
+                <div class="stat-data-list clearfix">
+                  <div class="data-item">
+                    <div class="data"><span
+                        data-bind="text: $root.sectionStatPage() ? $root.sectionStatData().sectionProgress : $root.chapterStatData().chapterProgress"></span>%
+                    </div>
+                    <div class="data-type">
+                      <span class="text" data-bind="text: i18nMessageText().studyProgress"></span>
+                    </div>
+                  </div>
+                  <div class="data-item">
+                    <div class="data"
+                      data-bind="text: $root.sectionStatPage() ? $root.sectionStatData().totalStudyTime : $root.chapterStatData().totalStudyTime">
+                    </div>
+                    <div class="data-type">
+                      <span class="text" data-bind="text: i18nMessageText().totalStudyTime"></span>
+                    </div>
+                  </div>
+                  <div class="data-item">
+                    <div class="data">
+                      <div class="data" data-bind="i18n: i18nMessageText().score, places: { n: $root.chapterStatData().totalScore }"></div>
+                    </div>
+                    <div class="data-type">
+                      <span class="text" data-bind="text: i18nMessageText().chapterScore"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="incomplete-page-area">
+                  <!-- ko if: $root.sectionStatPage() && !$root.currentSection().record().status() -->
+                  <div class="red-info" data-bind="text: $root.i18nMsgText().sectionUnfinishedPage">本节以下页面没有完成</div>
+                  <div class="page-card-list clearfix">
+                    <!-- ko foreach: { data: currentSection().pages(), as: 'page' } -->
+                    <div class="page-card-wrapper" data-bind="css: { 'hidden': page.record().status() }">
+                      <div class="page-card-item"
+                        data-bind="text: $index() + 1, click: $root.selectPage.bind($data, page, $root.currentSection(), $root.currentChapter())">
+                      </div>
+                    </div>
+                    <!-- /ko -->
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if: $root.chapterStatPage() && $root.chapterProgress() != 100 -->
+                  <div class="red-info" data-bind="text: $root.i18nMsgText().chapterUnfinishedPage">本章以下页面没有完成</div>
+                  <div class="page-card-list clearfix">
+                    <!-- ko foreach: { data: currentChapter().sections(), as: 'section' } -->
+                    <!-- ko foreach: { data: section.pages(), as: 'page' } -->
+                    <div class="page-card-wrapper" data-bind="css: { 'hidden': page.record().status() }">
+                      <div class="page-card-item"
+                        data-bind="text: ($parentContext.$index() + 1) + '.' + ($index() + 1), click: $root.selectPage.bind($data, page, section, $root.currentChapter())">
+                      </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                  </div>
+                  <!-- /ko -->
+                </div>
+                <div class="bottom-area clearfix" data-bind="css: { 'only-one': !$root.nextPageFamily().page }">
+                  <button class="bottom-btn left"
+                    data-bind="click: $root.sectionStatPage() ? reviewSection : reviewChapter" type="button"><span
+                      data-bind="text: $root.nextPageFamily().page ? i18nMessageText().stayHere : i18nMessageText().close"></span></button>
+                  <button class="bottom-btn"
+                    data-bind="click: goNextPage, css : { 'section-stat': $root.nextPageName() == $root.i18nMessageText().chapterSummary }"
+                    type="button"><span
+                      data-bind="text: $root.nextPageName() == $root.i18nMessageText().chapterSummary ? $root.i18nMessageText().chapterSummary : ( $root.sectionStatPage() ? $root.i18nMessageText().nextSection : ( $root.nextPageFamily().page ? $root.i18nMessageText().nextChapter : $root.i18nMessageText().noMore ))"></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /ko -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 统计弹框 结束 -->
+  <!-- 提示框 -->
+  <div class="modal fade" id="alertModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <i class="iconfont close-btn" data-dismiss="modal" aria-label="Close">&#xe83e;</i>
+        <div class="modal-image" data-bind="ifnot: $root.modalType() == 'goBackCreateRecordFailed'">
+          <img data-bind="attr: { 'src': $root.modalType() == 'videoGuide' ? './img/video_tip.png' :
+            $root.modalType() == 'multiLearning' ? './img/multiLearning.png' :
+            $root.modalType() == 'suspend' ? './img/suspend.png' :
+            $root.modalType() == 'stopLearning' ? './img/stopLearning.png' :
+            $root.modalType() == 'timeLimit' ? './img/timeLimit.png' :
+            $root.modalType() == 'incomplete' ? './img/incomplete.png' :
+            $root.modalType() == 'incompleteTimeLimit' ? './img/incompleteTimeLimit.png' :
+            $root.modalType() == 'autoSubmit' ? './img/autoSubmit.png' :
+            $root.modalType() == 'docFailed' ? './img/docFailed.png' :
+            $root.modalType() == 'videoFailed' || $root.modalType() == 'flashFailed' ? './img/flashFailed.png' :
+            $root.modalType() == 'incompleteOralItem' ? './img/incompleteOralItem.png' :
+            $root.modalType() == 'videoNoWifi' ? './img/tc_video.png' :
+            $root.modalType() == 'splitScreen' ? './img/incomplete.png' :
+            $root.modalType() == 'docNoWifi' ? './img/doc_tip.png' : ''
+          }" src="./img/video_tip.png" />
+        </div>
+        <div class="modal-body">
+          <div data-bind="if: $root.modalType() == 'videoGuide'">
+            <div class="modal-info">
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().notice">注意！</span><span class="black"
+                  data-bind="text: $root.i18nMsgText().videoWatchDuration">视频观看时长≥视频时长</span><span
+                  data-bind="text: $root.i18nMsgText().beCompleted">才能算完成,</span>
+                <div><span
+                    data-bind="text: $root.i18nMsgText().progressBarNotDragged">并且首次观看视频，进度条不能拖拽哦~</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().gotIt">知道了</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'incomplete'">
+            <div class="modal-info">
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().questionsNotCompleted">本页面还有题目没有完成，</span>
+                <br /> <span data-bind="text: $root.i18nMsgText().sureSwitchPages">确定要切换页面吗？</span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button"
+                data-bind="text: $root.i18nMsgText().stayOnThisPage">留在本页</button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().confirmLeave">确定离开</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'splitScreen'">
+            <div class="modal-info">
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().splitScreenTip">请在完成作答后点击“退出分屏”提交答案。</span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().gotIt">知道了</button>
+              <div><span class="check-span" data-bind="css: { 'checked': isSplitTipChecked }, click: toggleCheck"><i
+                    class="iconfont">&#xe706;</i></span><span
+                  data-bind="text: $root.i18nMsgText().noTipNextTime">下次不再提示</span></div>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'multiLearning'">
+            <div class="modal-info">
+              <div class="title" data-bind="text: $root.i18nMsgText().notLearnMultiplePagesAtSameTime">
+                请勿同时学习多个页面！
+              </div>
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().learningOtherPages2">系统检测到你正在学习其他页面</span>
+                <!-- <br/> <span id="courseName" data-bind="text: $root.i18nMsgText().courseName">课程名称</span>&gt;<span id="chapterName" data-bind="text: $root.i18nMsgText().chapterName">章名称</span>&gt;<span id="sectionName" data-bind="text: $root.i18nMsgText().sectionName">节名称</span> -->
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button"
+                data-bind="text: $root.i18nMsgText().returnToCourseSection">返回课程章节</button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().continueStudy">继续学习</button>
+            </div>
+            <div class="tip" data-bind="text: $root.i18nMsgText().stopcalculating">注：之前打开的页面会停止计算学习时间</div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'stopLearning'">
+            <div class="modal-info">
+              <div class="title">
+                <span data-bind="text: $root.i18nMsgText().stoppedStudy">本页面已停止学习</span>
+              </div>
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().learningOtherPages">系统检测到你正在学习其他页面</span>
+                <br />
+                <!-- 为保证学习记录的准确，系统已于{time}停止了该页面的学习，且该页面的学习记录不会保存。 -->
+                <span data-bind="i18n: $root.i18nMsgText().stopTimingTip">
+                  <span id="currentTime" data-place="time"></span>
+                </span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button"
+                data-bind="text: $root.i18nMsgText().returnToCourseSection">返回课程章节</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'createRecordFailed'">
+            <div class="modal-info">
+              <div class="title">
+                <span data-bind="text: $root.i18nMsgText().saveRecordFailed">保存学习记录失败</span>
+              </div>
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().saveRecordFailedText1">系统检测到你在提交</span>"<span
+                  id="lastStudySection"></span>"<span
+                  data-bind="text: $root.i18nMsgText().saveRecordFailedText2">小节学习记录时保存失败</span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().confirm">确定</button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().redo">重试</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'goBackCreateRecordFailed'">
+            <div class="modal-info">
+              <div class="title">
+                <span data-bind="text: $root.i18nMsgText().saveRecordFailed">保存学习记录失败</span>
+              </div>
+              <div class="content">
+                <div data-bind="text: $root.i18nMsgText().exitSaveRecordFailed">请检查网络是否正常连接，或尝试切换到4G网络后，再退出学习。</div>
+                <div data-bind="text: $root.i18nMsgText().exitSaveRecordFailed2">若继续退出，则本节学习记录可能无法保存。</div>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().stayOnThisPage"></button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().confirmLeave"></button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'createRecordFailedTooMany'">
+            <div class="modal-info">
+              <div class="title">
+                <span data-bind="text: $root.i18nMsgText().saveRecordFailed">保存学习记录失败</span>
+              </div>
+              <div class="content">
+                <span
+                  data-bind="text: $root.i18nMsgText().networkErrorTip">当前网络可能不稳定，导致系统保存学习记录时多次提交失败。系统已将本次学习记录暂存在本地，下次进入学习时可重新提交。请退出检查网络后重试。</span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().confirm">确定</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'suspend'">
+            <div class="modal-info">
+              <div class="title" data-bind="text: $root.i18nMsgText().timingLearningSuspended">
+                计时学习已暂停
+              </div>
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().walkingTooLong">走神太久啦！计时君停止工作~</span>(<span
+                  data-bind="text: $root.i18nMsgText().breakLearning">中断学习</span><span id="noStudyTime"
+                  data-bind="text: noStudyTime()"></span>)
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().continueStudy">继续学习</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'timeLimit'">
+            <div class="modal-info">
+              <div class="title" data-bind="text: $root.i18nMsgText().timeLimitedExercises">
+                限时练习
+              </div>
+              <div class="content">
+                <div class="question-num">
+                  <div class="data">03</div>
+                  <div class="data-type" data-bind="text: $root.i18nMsgText().exercisesNum">练习数</div>
+                </div>
+                <div class="question-time">
+                  <div class="data">02:30</div>
+                  <div class="data-type" data-bind="text: $root.i18nMsgText().timeLimit">限时时长</div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().startAnswer">开始答题</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'autoSubmit'">
+            <div class="modal-info">
+              <div class="content" data-bind="text: $root.i18nMsgText().timeLimitExpired">
+                限时答题时间已耗尽，已自动提交练习。
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text:$root.i18nMsgText().noted">我知道了</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'docFailed'">
+            <div class="modal-info">
+              <div class="content align-left">
+                <span data-bind="text: $root.i18nMsgText().documentNotDisplayedReasons">文档未显示可能是以下原因导致：</span>
+                <br />
+                <p class="small">
+                  1.<span data-bind="text: $root.i18nMsgText().largeDocuments">文档较大，请您耐心等待；</span>
+                  <br />2.<span data-bind="text: $root.i18nMsgText().checkFlashSet">请检查一下浏览器是否已设置允许加载flash，</span>
+                  <a class="flash-help" href="http://help.ulearning.cn/?p=4409" target="_blank"
+                    data-bind="text: $root.i18nMsgText().viewHowSet">点击这里查看如何设置</a>。
+                </p>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text:$root.i18nMsgText().noted">我知道了</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'flashFailed'">
+            <div class="modal-info">
+              <div class="content align-left">
+                <span data-bind="text: $root.i18nMsgText().loadErr">加载异常。请检查一下浏览器是否已设置允许加载flash，</span><a
+                  class="flash-help" href="http://help.ulearning.cn/?p=4409" target="_blank"
+                  data-bind="text: $root.i18nMsgText().viewHowSet">点击这里查看如何设置</a>。
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text:$root.i18nMsgText().noted">我知道了</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'videoFailed'">
+            <div class="modal-info">
+              <div class="content align-left">
+                <span data-bind="text:$root.i18nMsgText().loadErrReason">加载异常，可能是以下原因导致：</span>
+                <br />
+                <p class="small">
+                  1.<span data-bind="text:$root.i18nMsgText().checkFlashSet">请检查浏览器是否已设置允许加载flash，</span>
+                  <a class="flash-help" href="http://help.ulearning.cn/?p=4409" target="_blank"
+                    data-bind="text: $root.i18nMsgText().viewHowSet">点击这里查看如何设置</a>；
+                  <br /> 2.<span data-bind="text: $root.i18nMsgText().videoNotExist">视频资源不存在。</span>
+                </p>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text:$root.i18nMsgText().noted">我知道了</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'incompleteTimeLimit'">
+            <div class="modal-info">
+              <div class="content" data-bind="text: $root.i18nMsgText().timeLimitedAnswerNotCompleted">
+                限时答题还未完成，请做完所有题目后再切换页面。
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text:$root.i18nMsgText().noted">我知道了</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'incompleteOralItem'">
+            <div class="modal-info">
+              <div class="content" data-bind="text: $root.i18nMsgText().confirmLeaveTip">
+                本页面还有单词/句子/段落未读完确定要离开吗？
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().continueStudy">继续学习</button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().leaveThePage">离开本页</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'videoNoWifi'">
+            <div class="modal-info">
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().videoNoWifi1">当前使用的不是wifi网络，继续播放将消耗流量，是否继续？</span>
+                <br /><span data-bind="text: $root.i18nMsgText().videoNoWifi2">（提示：在课程单元目录中，可以缓存课件中的媒体资源）</span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().continue">继续</button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().cancel">否</button>
+            </div>
+          </div>
+          <div data-bind="if: $root.modalType() == 'docNoWifi'">
+            <div class="modal-info">
+              <div class="content">
+                <span data-bind="text: $root.i18nMsgText().videoNoWifi1">当前使用的不是wifi网络，继续播放将消耗流量，是否继续？</span>
+              </div>
+            </div>
+            <div class="modal-operation">
+              <button class="btn-submit" type="button" data-bind="text: $root.i18nMsgText().continue">继续</button>
+              <button class="btn-hollow" type="button" data-bind="text: $root.i18nMsgText().cancel">否</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 提示框 结束 -->
+  <!-- 用户引导 -->
+  <div class="user-guide" data-bind="css: {
+    'main': $root.userGuideType() == 'main',
+    'question': $root.userGuideType() == 'question',
+    'video': $root.userGuideType() == 'video'
+  }">
+    <div class="arrow"></div>
+    <div data-bind="if: $root.userGuideType() == 'main'">
+      <div data-bind="if: userGuideStep() == 1">
+        <div class="title" data-bind="text: $root.i18nMsgText().quitLearning">退出学习</div>
+        <div class="content" data-bind="text: $root.i18nMsgText().quitLearningTip">点击这里可以退出学习，回到课程的章节列表</div>
+      </div>
+      <div data-bind="if: userGuideStep() == 2">
+        <div class="title" data-bind="text: $root.i18nMsgText().expandOrCollapseCatalog">展开/收起目录</div>
+        <div class="content" data-bind="text: $root.i18nMsgText().expandOrCollapseCatalogTip">点击这里可以展开/收起目录，并查看页面完成状态
+        </div>
+      </div>
+      <div data-bind="if: userGuideStep() == 3">
+        <div class="title" data-bind="text: $root.i18nMsgText().pageTurning">翻页</div>
+        <div class="content" data-bind="text: $root.i18nMsgText().pageTurningTip">点击此区域可向后翻页</div>
+      </div>
+    </div>
+    <div data-bind="if: $root.userGuideType() == 'question'">
+      <div data-bind="if: userGuideStep() == 1">
+        <div class="title" data-bind="text: $root.i18nMsgText().pageExercises">页面练习</div>
+        <div class="content" data-bind="text: $root.i18nMsgText().checkAnswerTip">点击每个小圆圈可进入该小题，答题后还能在这里看出答对了还是答错了</div>
+      </div>
+      <div data-bind="if: userGuideStep() == 2">
+        <div class="title" data-bind="text: $root.i18nMsgText().startAnswer">开始答题</div>
+        <div class="content" data-bind="text: $root.i18nMsgText().readAnswerRule">认真阅读答题规则，点击此按钮后开始答题哦</div>
+      </div>
+    </div>
+    <div class="operation">
+      <button class="btn-hollow" type="button"
+        data-bind="click: nextGuide,text: $root.i18nMsgText().noted">我知道了</button>
+      <div class="close-btn" data-bind="click: hideGuide,text: $root.i18nMsgText().skipTips">跳过所有提示</div>
+    </div>
+  </div>
+  <!-- 用户引导 结束 -->
+  <!-- 文档全屏 -->
+  <div class="doc-fullscreen-container"></div>
+  <!-- 文档全屏 结束 -->
+  <div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+    <div class="pswp__scroll-wrap">
+      <div class="pswp__container">
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+      </div>
+      <div class="pswp__ui pswp__ui--hidden">
+        <div class="pswp__top-bar">
+          <div class="pswp__counter"></div>
+          <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+          <button class="pswp__button pswp__button--share" title="Share"></button>
+          <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+          <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+          <div class="pswp__preloader">
+            <div class="pswp__preloader__icn">
+              <div class="pswp__preloader__cut">
+                <div class="pswp__preloader__donut"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+          <div class="pswp__share-tooltip">
+          </div>
+        </div>
+        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+        <div class="pswp__caption">
+          <div class="pswp__caption__center">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 手机端划词注释 -->
+  <!-- Modal -->
+  <div class="modal fade" id="mobileNote" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img class="close-img-btn"
+            src="./img/close_btn.png"></button>
+        <div class="modal-body">
+          <div class="note-title"></div>
+          <div class="note-text-wrapper">
+            <div class="note-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="iRecorderWrapper" class="hide-wrapper">
+    <i class="iconfont close-btn" data-bind="click: hideWrapper">&#xe83e;</i>
+    <div class="record-tips" data-bind="visible: !mobileMode, text: $root.i18nMsgText().recordTip1">
+      请确认已允许浏览器加载flash插件和使用录音权限。
+    </div>
+    <div class="record-tips" data-bind="visible: mobileMode, text: $root.i18nMsgText().recordTip2">
+      请确认已允许页面和微信使用手机录音和摄像权限。
+    </div>
+    <div id="iRecorder"></div>
+  </div>
+  <script src="./3rdlib/modernizr-3.6.0.min.js"></script>
+  <script src="./3rdlib/jquery-1.12.4/jquery.min.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="./3rdlib/jquery-1.12.4/jquery.min.js"><\/script>')
+  </script>
+  <script src="./3rdlib/jquery-1.12.4/jquery.xdomainrequest.min.js"></script>
+  <script src="./3rdlib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+  <!-- <script src="./3rdlib/Swiper-2.7.6/idangerous.swiper.min.js"></script> -->
+  <!--[if !IE]><!-->
+  <script src="./3rdlib/perfect-scrollbar-0.8.1/js/perfect-scrollbar.jquery.js"></script>
+  <!--<![endif]-->
+  <!--[if gte IE 10]>
+    <script src="./3rdlib/perfect-scrollbar-0.8.1/js/perfect-scrollbar.jquery.min.js"></script>
+  <![endif]-->
+  <script src="./3rdlib/jquery-confirm-3.3.4/jquery-confirm.min.js"></script>
+  <script src="./3rdlib/interact-1.2.9/interact.min.js"></script>
+  <script src="./3rdlib/dragula-3.7.2/dragula.min.js"></script>
+  <script src="./3rdlib/pdf.js-1.9.426/pdf.js"></script>
+  <script src="./3rdlib/jquery-circle-progress-1.2.2/circle-progress.min.js"></script>
+  <script src="./3rdlib/swfobject-2.2/swfobject/swfobject.js"></script>
+  <script src="./common/flexpaper/flexpaper.js"></script>
+  <script src="./common/flexpaper/flexpaper_handlers.js"></script>
+  <script src="./common/flexpaper/swfobject.js"></script>
+  <script src="./common/jwplayer/jwplayer-latest.js"></script>
+  <script src="./common/jwplayer/jwplayer.html5.js"></script>
+  <script src="./common/jwplayer/jwpsrv.js"></script>
+  <script src="./3rdlib/mediaelement-3.2.4/plugins/hls.js?ver=1"></script>
+  <script src="./3rdlib/mediaelement-3.2.4/mediaelement-and-player.min.js"></script>
+  <script src="./3rdlib/mediaelement-3.2.4/lang/zh-cn.js"></script>
+  <link rel="stylesheet" href="./3rdlib/mediaelement-3.2.4/mediaelementplayer.min.css" />
+  <script src="./3rdlib/mediaelement-3.2.4/plugins/speed/speed.min.js"></script>
+  <script src="./3rdlib/mediaelement-3.2.4/plugins/speed/speed-i18n.js"></script>
+  <link rel="stylesheet" href="./3rdlib/mediaelement-3.2.4/plugins/speed/speed.min.css" />
+  <script src="./3rdlib/mediaelement-3.2.4/plugins/setting/setting.js"></script>
+  <link rel="stylesheet" href="./3rdlib/mediaelement-3.2.4/plugins/setting/setting.css" />
+  <!-- <script src="https://sdk.cloud.chivox.com/chivoxsdk-js/v4.0/load_core.js"></script> -->
+  <!-- <script src="https://sdk.17kouyu.com/jssdk/v4.0/iload.js"></script> -->
+  <script src="./3rdlib/17kouyu/iload.js"></script>
+  <script src="./3rdlib/photoswipe/dist/photoswipe.min.js"></script>
+  <script src="./3rdlib/photoswipe/dist/photoswipe-ui-default.min.js"></script>
+  <script src="./3rdlib/select2/js/select2.min.js"></script>
+  <script>
+    jwplayer.key = "KtSBN5+tsgFks7XHjoRzhfyR88gFbCRERVwfWd/TbH0=";
+  </script>
+  <script src="./components/customAudio/customAudio.js"></script>
+  <script src="./common/cordova/cordova_init.js?version=2.0.103"></script>
+  <script src="./common/config.js"></script>
+  <script src="./common/office.js"></script>
+  <script src="./js/plugins.js?version=2.0.101"></script>
+  <script>
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.id = "mathjax";
+    script.src = MATHJAX_HOST + "/3rdlib/mathjax-2.7.5/MathJax.js?config=TeX-MML-AM_SVG";
+    document.body.appendChild(script);
+    
+    var script1 = document.createElement("script");
+    script1.type = "text/javascript";
+    script1.id = "mathjax";
+    script1.src = MATHJAX_HOST + "/3rdlib/mathjax-2.7.5/extensions/TeX/extpfeil.js?config=TeX-MML-AM_SVG";
+    document.body.appendChild(script1);
+
+    var script2 = document.createElement("script");
+    script2.type = "text/javascript";
+    script2.id = "mathjax";
+    script2.src = MATHJAX_HOST + "/3rdlib/mathjax-2.7.5/extensions/TeX/mediawiki-texvc.js?config=TeX-MML-AM_SVG";
+    document.body.appendChild(script2);
+
+    var script3 = document.createElement("script");
+    script3.type = "text/javascript";
+    script3.id = "mathjax";
+    script3.src = MATHJAX_HOST + "/3rdlib/mathjax-2.7.5/extensions/TeX/autoload-all.js?config=TeX-MML-AM_SVG";
+    document.body.appendChild(script3);
+
+    setTimeout(function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.id = "xiaonengjs";
+      script.src = "https://visitor.ntalker.com/visitor/js/xiaoneng.js?siteid=kf_20125";
+      script.async = "async";
+      document.body.appendChild(script);
+    }, 1000);
+  </script>
+  <script data-main="./js/init.js?version=250114" src="./3rdlib/require/require.min.js"></script>
+</body>
+
+</html>
+<style>
+  html[dir=rtl] .ps__scrollbar-x-rail {
+    left: initial !important;
+    right: 0 !important;
+  }
+
+  html[dir=rtl] .ps__scrollbar-y-rail {
+    right: initial !important;
+    left: 0 !important;
+  }
+</style>

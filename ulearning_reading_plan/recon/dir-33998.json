@@ -1,0 +1,1349 @@
+{
+  "coursename" : "求是读书计划阅读书目",
+  "chapters" : [ {
+    "nodetitle" : "道德影响力",
+    "preview" : 0,
+    "orderindex" : 1,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492411,
+    "items" : [ {
+      "itemid" : 1845889,
+      "ishidepreview" : "1",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809637,
+        "type" : 11,
+        "title" : "《共产党宣言》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《共产党宣言》"
+    }, {
+      "itemid" : 1845891,
+      "ishidepreview" : "1",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809638,
+        "type" : 11,
+        "title" : "《马克思主义经典著作选读》（第三版）",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《马克思主义经典著作选读》（第三版）"
+    }, {
+      "itemid" : 1845893,
+      "ishidepreview" : "0",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809639,
+        "type" : 11,
+        "title" : "《资本论》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《资本论》"
+    }, {
+      "itemid" : 1845895,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809640,
+        "type" : 11,
+        "title" : "《苏格拉底的申辩》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《苏格拉底的申辩》"
+    }, {
+      "itemid" : 1845897,
+      "ishidepreview" : "0",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809641,
+        "type" : 11,
+        "title" : "《尼各马可伦理学》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《尼各马可伦理学》"
+    }, {
+      "itemid" : 1845899,
+      "ishidepreview" : "1",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809642,
+        "type" : 11,
+        "title" : "《中国哲学简史》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《中国哲学简史》"
+    }, {
+      "itemid" : 1845901,
+      "ishidepreview" : "1",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809643,
+        "type" : 11,
+        "title" : "《罪与罚》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《罪与罚》"
+    }, {
+      "itemid" : 1845903,
+      "ishidepreview" : "1",
+      "orderindex" : 8,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809644,
+        "type" : 11,
+        "title" : "《忏悔录》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《忏悔录》"
+    }, {
+      "itemid" : 1845905,
+      "ishidepreview" : "0",
+      "orderindex" : 9,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809645,
+        "type" : 11,
+        "title" : "《论语译注》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《论语译注》"
+    } ]
+  }, {
+    "nodetitle" : "审美鉴赏力",
+    "preview" : 0,
+    "orderindex" : 2,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492412,
+    "items" : [ {
+      "itemid" : 1845907,
+      "ishidepreview" : "0",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809646,
+        "type" : 11,
+        "title" : "《鲁迅散文诗歌精选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4823828,
+        "type" : 11,
+        "title" : "《鲁迅散文选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 3,
+        "qrcode" : 0,
+        "id" : 4823829,
+        "type" : 11,
+        "title" : "《鲁迅书信选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 4,
+        "qrcode" : 0,
+        "id" : 4823830,
+        "type" : 11,
+        "title" : "《鲁迅小说选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 5,
+        "qrcode" : 0,
+        "id" : 4823831,
+        "type" : 11,
+        "title" : "《鲁迅选集（小说散文卷）》",
+        "status" : 0
+      }, {
+        "orderindex" : 6,
+        "qrcode" : 0,
+        "id" : 4823832,
+        "type" : 11,
+        "title" : "《当代鲁迅问题评论 陈安湖自选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 7,
+        "qrcode" : 0,
+        "id" : 4823833,
+        "type" : 11,
+        "title" : "《反抗“被描写” 郜元宝鲁迅研究自选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 8,
+        "qrcode" : 0,
+        "id" : 4823834,
+        "type" : 11,
+        "title" : "《韩国鲁迅研究精选集 第2辑》",
+        "status" : 0
+      }, {
+        "orderindex" : 9,
+        "qrcode" : 0,
+        "id" : 4823835,
+        "type" : 11,
+        "title" : "《何凝编录并序 鲁迅杂感选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 10,
+        "qrcode" : 0,
+        "id" : 4823836,
+        "type" : 11,
+        "title" : "《鲁迅选集（杂文卷）》",
+        "status" : 0
+      }, {
+        "orderindex" : 11,
+        "qrcode" : 0,
+        "id" : 4823837,
+        "type" : 11,
+        "title" : "《鲁迅选集》第一卷",
+        "status" : 0
+      }, {
+        "orderindex" : 12,
+        "qrcode" : 0,
+        "id" : 4823838,
+        "type" : 11,
+        "title" : "《鲁迅选集》第二卷",
+        "status" : 0
+      }, {
+        "orderindex" : 13,
+        "qrcode" : 0,
+        "id" : 4823839,
+        "type" : 11,
+        "title" : "《鲁迅选集》第三卷",
+        "status" : 0
+      }, {
+        "orderindex" : 14,
+        "qrcode" : 0,
+        "id" : 4823840,
+        "type" : 11,
+        "title" : "《鲁迅选集》第四卷",
+        "status" : 0
+      }, {
+        "orderindex" : 15,
+        "qrcode" : 0,
+        "id" : 4823841,
+        "type" : 11,
+        "title" : "《鲁迅学术作品精选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 16,
+        "qrcode" : 0,
+        "id" : 4823842,
+        "type" : 11,
+        "title" : "《鲁迅杂感选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 17,
+        "qrcode" : 0,
+        "id" : 4823843,
+        "type" : 11,
+        "title" : "《鲁迅杂文选集》外文出版社",
+        "status" : 0
+      }, {
+        "orderindex" : 18,
+        "qrcode" : 0,
+        "id" : 4823844,
+        "type" : 11,
+        "title" : "《鲁迅杂文选集》张秀枫编选",
+        "status" : 0
+      }, {
+        "orderindex" : 19,
+        "qrcode" : 0,
+        "id" : 4823845,
+        "type" : 11,
+        "title" : "《鲁迅自选集》天马书店印行",
+        "status" : 0
+      }, {
+        "orderindex" : 20,
+        "qrcode" : 0,
+        "id" : 4823846,
+        "type" : 11,
+        "title" : "《鲁迅选集》文化艺术出版社",
+        "status" : 0
+      }, {
+        "orderindex" : 21,
+        "qrcode" : 0,
+        "id" : 4823847,
+        "type" : 11,
+        "title" : "《我们要批评家 鲁迅杂文精选集》",
+        "status" : 0
+      }, {
+        "orderindex" : 22,
+        "qrcode" : 0,
+        "id" : 4823848,
+        "type" : 11,
+        "title" : "《在巨人的光照下》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《鲁迅选集》"
+    }, {
+      "itemid" : 1845909,
+      "ishidepreview" : "1",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809647,
+        "type" : 11,
+        "title" : "《红楼梦》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《红楼梦》"
+    }, {
+      "itemid" : 1845911,
+      "ishidepreview" : "0",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809648,
+        "type" : 11,
+        "title" : "《老子范韦》",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4823826,
+        "type" : 11,
+        "title" : "《读懂老子》",
+        "status" : 0
+      }, {
+        "orderindex" : 3,
+        "qrcode" : 0,
+        "id" : 4823827,
+        "type" : 11,
+        "title" : "《老子基础》",
+        "status" : 0
+      }, {
+        "orderindex" : 4,
+        "qrcode" : 0,
+        "id" : 4824495,
+        "type" : 11,
+        "title" : "《老子》（汉）河上公，（三国）王弼注；（汉）严遵指归；刘思禾校点",
+        "status" : 0
+      }, {
+        "orderindex" : 5,
+        "qrcode" : 0,
+        "id" : 4824496,
+        "type" : 11,
+        "title" : "《老子》老聃著范永胜译著",
+        "status" : 0
+      }, {
+        "orderindex" : 6,
+        "qrcode" : 0,
+        "id" : 4824497,
+        "type" : 11,
+        "title" : "《老子》李存山注译",
+        "status" : 0
+      }, {
+        "orderindex" : 7,
+        "qrcode" : 0,
+        "id" : 4824498,
+        "type" : 11,
+        "title" : "《老子》林存光著",
+        "status" : 0
+      }, {
+        "orderindex" : 8,
+        "qrcode" : 0,
+        "id" : 4824499,
+        "type" : 11,
+        "title" : "《老子》吴根友导读注释",
+        "status" : 0
+      }, {
+        "orderindex" : 9,
+        "qrcode" : 0,
+        "id" : 4824500,
+        "type" : 11,
+        "title" : "《老子》杨春光主编；朱昌平，杨宏峰副主编",
+        "status" : 0
+      }, {
+        "orderindex" : 10,
+        "qrcode" : 0,
+        "id" : 4824501,
+        "type" : 11,
+        "title" : "《老子》赵志强著",
+        "status" : 0
+      }, {
+        "orderindex" : 11,
+        "qrcode" : 0,
+        "id" : 4824502,
+        "type" : 11,
+        "title" : "《老子太极拳本原》",
+        "status" : 0
+      }, {
+        "orderindex" : 12,
+        "qrcode" : 0,
+        "id" : 4824503,
+        "type" : 11,
+        "title" : "《老子·列子》",
+        "status" : 0
+      }, {
+        "orderindex" : 13,
+        "qrcode" : 0,
+        "id" : 4824504,
+        "type" : 11,
+        "title" : "《老子本义》",
+        "status" : 0
+      }, {
+        "orderindex" : 14,
+        "qrcode" : 0,
+        "id" : 4824505,
+        "type" : 11,
+        "title" : "《老子的故事》汉英对照",
+        "status" : 0
+      }, {
+        "orderindex" : 15,
+        "qrcode" : 0,
+        "id" : 4824506,
+        "type" : 11,
+        "title" : "《老子的伟大设计》",
+        "status" : 0
+      }, {
+        "orderindex" : 16,
+        "qrcode" : 0,
+        "id" : 4824507,
+        "type" : 11,
+        "title" : "《老子精讲》",
+        "status" : 0
+      }, {
+        "orderindex" : 17,
+        "qrcode" : 0,
+        "id" : 4824508,
+        "type" : 11,
+        "title" : "《老子论》",
+        "status" : 0
+      }, {
+        "orderindex" : 18,
+        "qrcode" : 0,
+        "id" : 4824509,
+        "type" : 11,
+        "title" : "《老子美学思想的当代意义》",
+        "status" : 0
+      }, {
+        "orderindex" : 19,
+        "qrcode" : 0,
+        "id" : 4824510,
+        "type" : 11,
+        "title" : "《老子我说》",
+        "status" : 0
+      }, {
+        "orderindex" : 20,
+        "qrcode" : 0,
+        "id" : 4824511,
+        "type" : 11,
+        "title" : "《老子析义》",
+        "status" : 0
+      }, {
+        "orderindex" : 21,
+        "qrcode" : 0,
+        "id" : 4824512,
+        "type" : 11,
+        "title" : "《老子新读》",
+        "status" : 0
+      }, {
+        "orderindex" : 22,
+        "qrcode" : 0,
+        "id" : 4824513,
+        "type" : 11,
+        "title" : "《老子新释》",
+        "status" : 0
+      }, {
+        "orderindex" : 23,
+        "qrcode" : 0,
+        "id" : 4824514,
+        "type" : 11,
+        "title" : "《老子研究》",
+        "status" : 0
+      }, {
+        "orderindex" : 24,
+        "qrcode" : 0,
+        "id" : 4824515,
+        "type" : 11,
+        "title" : "《老子臆解》",
+        "status" : 0
+      }, {
+        "orderindex" : 25,
+        "qrcode" : 0,
+        "id" : 4824516,
+        "type" : 11,
+        "title" : "《老子哲学》",
+        "status" : 0
+      }, {
+        "orderindex" : 26,
+        "qrcode" : 0,
+        "id" : 4824517,
+        "type" : 11,
+        "title" : "《老子哲学大智慧》",
+        "status" : 0
+      }, {
+        "orderindex" : 27,
+        "qrcode" : 0,
+        "id" : 4824518,
+        "type" : 11,
+        "title" : "《老子注》",
+        "status" : 0
+      }, {
+        "orderindex" : 28,
+        "qrcode" : 0,
+        "id" : 4824519,
+        "type" : 11,
+        "title" : "《人人都能读懂老子》",
+        "status" : 0
+      }, {
+        "orderindex" : 29,
+        "qrcode" : 0,
+        "id" : 4824520,
+        "type" : 11,
+        "title" : "《老子全解》叶自成著",
+        "status" : 0
+      }, {
+        "orderindex" : 30,
+        "qrcode" : 0,
+        "id" : 4824521,
+        "type" : 11,
+        "title" : "《哲人的智慧——老子解读》",
+        "status" : 0
+      }, {
+        "orderindex" : 31,
+        "qrcode" : 0,
+        "id" : 4824522,
+        "type" : 11,
+        "title" : "《智者之言——老子选读》",
+        "status" : 0
+      }, {
+        "orderindex" : 32,
+        "qrcode" : 0,
+        "id" : 4824523,
+        "type" : 11,
+        "title" : "《老子的故事》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《\t老子》"
+    }, {
+      "itemid" : 1845913,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809649,
+        "type" : 11,
+        "title" : "《美学散步》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《美学散步》"
+    }, {
+      "itemid" : 1845915,
+      "ishidepreview" : "0",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809650,
+        "type" : 11,
+        "title" : "《西方美学史》",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4824483,
+        "type" : 11,
+        "title" : "《西方美学史》 凌继尧著",
+        "status" : 0
+      }, {
+        "orderindex" : 3,
+        "qrcode" : 0,
+        "id" : 4824484,
+        "type" : 11,
+        "title" : "《西方美学史概观》",
+        "status" : 0
+      }, {
+        "orderindex" : 4,
+        "qrcode" : 0,
+        "id" : 4824485,
+        "type" : 11,
+        "title" : "《西方美学史纲要》",
+        "status" : 0
+      }, {
+        "orderindex" : 5,
+        "qrcode" : 0,
+        "id" : 4824486,
+        "type" : 11,
+        "title" : "《西方美学史讲演录》",
+        "status" : 0
+      }, {
+        "orderindex" : 6,
+        "qrcode" : 0,
+        "id" : 4824487,
+        "type" : 11,
+        "title" : "《西方美学史资料选编（上）》",
+        "status" : 0
+      }, {
+        "orderindex" : 7,
+        "qrcode" : 0,
+        "id" : 4827866,
+        "type" : 11,
+        "title" : "《西方美学史资料选编（下）》",
+        "status" : 2
+      }, {
+        "orderindex" : 8,
+        "qrcode" : 0,
+        "id" : 4824489,
+        "type" : 11,
+        "title" : "《西方美学思想史》",
+        "status" : 2
+      }, {
+        "orderindex" : 9,
+        "qrcode" : 0,
+        "id" : 4824491,
+        "type" : 11,
+        "title" : "《西方美学史论丛续编》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《西方美学史》"
+    }, {
+      "itemid" : 1845917,
+      "ishidepreview" : "0",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809651,
+        "type" : 11,
+        "title" : "《美育书简》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《美育书简》"
+    }, {
+      "itemid" : 1845919,
+      "ishidepreview" : "0",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809652,
+        "type" : 11,
+        "title" : "《诗经直解》（上）",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4827871,
+        "type" : 11,
+        "title" : "《诗经直解》（下）",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《诗经直解》"
+    }, {
+      "itemid" : 1845921,
+      "ishidepreview" : "0",
+      "orderindex" : 8,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809653,
+        "type" : 11,
+        "title" : "《宋词三百首笺注》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《\t宋词三百首笺注》"
+    } ]
+  }, {
+    "nodetitle" : "协作领导力",
+    "preview" : 0,
+    "orderindex" : 3,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492413,
+    "items" : [ {
+      "itemid" : 1845923,
+      "ishidepreview" : "0",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809654,
+        "type" : 11,
+        "title" : "《乡土中国》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《乡土中国》"
+    }, {
+      "itemid" : 1845925,
+      "ishidepreview" : "0",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809655,
+        "type" : 11,
+        "title" : "《管理的实践》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《管理的实践》"
+    }, {
+      "itemid" : 1845927,
+      "ishidepreview" : "0",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809656,
+        "type" : 11,
+        "title" : "《论法的精神》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《论法的精神》"
+    }, {
+      "itemid" : 1845929,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809657,
+        "type" : 11,
+        "title" : "《影响力》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《影响力》"
+    }, {
+      "itemid" : 1845931,
+      "ishidepreview" : "1",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809658,
+        "type" : 11,
+        "title" : "《人性的弱点》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《人性的弱点》"
+    }, {
+      "itemid" : 1845933,
+      "ishidepreview" : "0",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809659,
+        "type" : 11,
+        "title" : "《社会契约论》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《社会契约论》"
+    }, {
+      "itemid" : 1845935,
+      "ishidepreview" : "0",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809660,
+        "type" : 11,
+        "title" : "《国富论》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《国富论》"
+    }, {
+      "itemid" : 1845937,
+      "ishidepreview" : "0",
+      "orderindex" : 8,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809661,
+        "type" : 11,
+        "title" : "《孙子兵法》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《孙子兵法》"
+    } ]
+  }, {
+    "nodetitle" : "认知理解力",
+    "preview" : 0,
+    "orderindex" : 4,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492414,
+    "items" : [ {
+      "itemid" : 1845939,
+      "ishidepreview" : "1",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809662,
+        "type" : 11,
+        "title" : "《物种起源》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《物种起源》"
+    }, {
+      "itemid" : 1845941,
+      "ishidepreview" : "0",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809663,
+        "type" : 11,
+        "title" : "《理想国》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《理想国》"
+    }, {
+      "itemid" : 1845943,
+      "ishidepreview" : "1",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809664,
+        "type" : 11,
+        "title" : "《科学革命的结构》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《科学革命的结构》"
+    }, {
+      "itemid" : 1845945,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809665,
+        "type" : 11,
+        "title" : "《猜想与反驳》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《猜想与反驳》"
+    }, {
+      "itemid" : 1845947,
+      "ishidepreview" : "0",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809666,
+        "type" : 11,
+        "title" : "《人生五大问题》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《人生五大问题》"
+    }, {
+      "itemid" : 1845949,
+      "ishidepreview" : "0",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809667,
+        "type" : 11,
+        "title" : "《史记》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《史记》"
+    }, {
+      "itemid" : 1845951,
+      "ishidepreview" : "0",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809668,
+        "type" : 11,
+        "title" : "《狭义与广义相对论浅说》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《狭义与广义相对论浅说》"
+    } ]
+  }, {
+    "nodetitle" : "应用行动力",
+    "preview" : 0,
+    "orderindex" : 5,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492415,
+    "items" : [ {
+      "itemid" : 1845953,
+      "ishidepreview" : "1",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809669,
+        "type" : 11,
+        "title" : "《精神分析导论》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《精神分析导论》"
+    }, {
+      "itemid" : 1845955,
+      "ishidepreview" : "1",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809670,
+        "type" : 11,
+        "title" : "《瓦尔登湖》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《瓦尔登湖》"
+    }, {
+      "itemid" : 1845957,
+      "ishidepreview" : "0",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809671,
+        "type" : 11,
+        "title" : "《追寻生命的意义》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《追寻生命的意义》"
+    }, {
+      "itemid" : 1845959,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809672,
+        "type" : 11,
+        "title" : "《生存与命运》（上册）",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4827889,
+        "type" : 11,
+        "title" : "《生存与命运》（下册）",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《生存与命运》"
+    }, {
+      "itemid" : 1845961,
+      "ishidepreview" : "0",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809673,
+        "type" : 11,
+        "title" : "《西行漫记——红星照耀中国》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《西行漫记——红星照耀中国》"
+    }, {
+      "itemid" : 1845963,
+      "ishidepreview" : "1",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809674,
+        "type" : 11,
+        "title" : "《苦难辉煌》",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《苦难辉煌》"
+    }, {
+      "itemid" : 1845965,
+      "ishidepreview" : "0",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809675,
+        "type" : 11,
+        "title" : "《乌合之众：大众心理研究》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《乌合之众：大众心理研究》"
+    } ]
+  }, {
+    "nodetitle" : "高阶创造力",
+    "preview" : 0,
+    "orderindex" : 6,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492416,
+    "items" : [ {
+      "itemid" : 1845967,
+      "ishidepreview" : "0",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809676,
+        "type" : 11,
+        "title" : "《人类简史》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《人类简史》"
+    }, {
+      "itemid" : 1845969,
+      "ishidepreview" : "0",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809677,
+        "type" : 11,
+        "title" : "《高科技高思维》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《高科技高思维》"
+    }, {
+      "itemid" : 1845971,
+      "ishidepreview" : "0",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809678,
+        "type" : 11,
+        "title" : "《时间简史》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《时间简史》"
+    }, {
+      "itemid" : 1845973,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809679,
+        "type" : 11,
+        "title" : "《谈谈方法》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《谈谈方法》"
+    }, {
+      "itemid" : 1845975,
+      "ishidepreview" : "0",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809680,
+        "type" : 11,
+        "title" : "《未来简史》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《未来简史》"
+    }, {
+      "itemid" : 1845977,
+      "ishidepreview" : "0",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809681,
+        "type" : 11,
+        "title" : "《爆裂》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《爆裂》"
+    }, {
+      "itemid" : 1845979,
+      "ishidepreview" : "0",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809682,
+        "type" : 11,
+        "title" : "《西方文明史》上",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4824492,
+        "type" : 11,
+        "title" : "《西方文明史》下",
+        "status" : 0
+      }, {
+        "orderindex" : 3,
+        "qrcode" : 0,
+        "id" : 4824493,
+        "type" : 11,
+        "title" : "《早期西方文明史札记》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《\t西方文明史》"
+    }, {
+      "itemid" : 1845981,
+      "ishidepreview" : "0",
+      "orderindex" : 8,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 1,
+        "qrcode" : 0,
+        "id" : 4809683,
+        "type" : 11,
+        "title" : "《约翰克利斯朵夫》（上）",
+        "status" : 0
+      }, {
+        "orderindex" : 2,
+        "qrcode" : 0,
+        "id" : 4827904,
+        "type" : 11,
+        "title" : "《约翰克利斯朵夫》（下）",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《约翰克利斯朵夫》"
+    } ]
+  }, {
+    "nodetitle" : "沟通表达力",
+    "preview" : 0,
+    "orderindex" : 7,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2492417,
+    "items" : [ {
+      "itemid" : 1845983,
+      "ishidepreview" : "0",
+      "orderindex" : 1,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809684,
+        "type" : 11,
+        "title" : "《精神分析引论》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《精神分析引论》"
+    }, {
+      "itemid" : 1845985,
+      "ishidepreview" : "0",
+      "orderindex" : 2,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809685,
+        "type" : 11,
+        "title" : "《人类的故事》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《人类的故事》"
+    }, {
+      "itemid" : 1845987,
+      "ishidepreview" : "0",
+      "orderindex" : 3,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809686,
+        "type" : 11,
+        "title" : "《哈姆雷特》（中英双语珍藏版） ",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《哈姆雷特》（中英双语珍藏版） "
+    }, {
+      "itemid" : 1845989,
+      "ishidepreview" : "0",
+      "orderindex" : 4,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809687,
+        "type" : 11,
+        "title" : "《复活》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《复活》"
+    }, {
+      "itemid" : 1845991,
+      "ishidepreview" : "0",
+      "orderindex" : 5,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809688,
+        "type" : 11,
+        "title" : "《The Spirit of The Chinese People》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《The Spirit of The Chinese People》"
+    }, {
+      "itemid" : 1845993,
+      "ishidepreview" : "1",
+      "orderindex" : 6,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809689,
+        "type" : 11,
+        "title" : "《The Old Man and The Sea 老人与海》（中英对照文全译本）",
+        "status" : 2
+      } ],
+      "published" : 1,
+      "title" : "《The Old Man and The Sea 老人与海》（中英对照文全译本）"
+    }, {
+      "itemid" : 1845995,
+      "ishidepreview" : "0",
+      "orderindex" : 7,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809690,
+        "type" : 11,
+        "title" : "《东方主义》",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《东方主义》"
+    }, {
+      "itemid" : 1845997,
+      "ishidepreview" : "0",
+      "orderindex" : 8,
+      "qrcode" : 0,
+      "coursepages" : [ {
+        "orderindex" : 90000,
+        "qrcode" : 0,
+        "id" : 4809691,
+        "type" : 11,
+        "title" : "《The Moon and Sixpence 月亮与六便士》（双语读物中英文对照）",
+        "status" : 0
+      } ],
+      "published" : 1,
+      "title" : "《The Moon and Sixpence 月亮与六便士》（双语读物中英文对照）"
+    } ]
+  } ],
+  "showType" : 1,
+  "courseid" : 33998
+}

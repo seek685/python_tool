@@ -1,0 +1,87 @@
+{
+  "coursename" : "世界科技文明史",
+  "chapters" : [ {
+    "nodetitle" : "第一章 绪论",
+    "preview" : 0,
+    "orderindex" : 1,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580961,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第二章 远古时期的科学技术",
+    "preview" : 0,
+    "orderindex" : 2,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580962,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第三章 古代文明的科学技术",
+    "preview" : 0,
+    "orderindex" : 3,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580963,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第四章 古典时期到中世纪",
+    "preview" : 0,
+    "orderindex" : 4,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580964,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第五章 文艺复兴到科学革命",
+    "preview" : 0,
+    "orderindex" : 5,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580965,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第六章 工业文明的形成",
+    "preview" : 0,
+    "orderindex" : 6,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580966,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第七章 现代科技文明",
+    "preview" : 0,
+    "orderindex" : 7,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580967,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "第八章 科技文明与人类未来",
+    "preview" : 0,
+    "orderindex" : 8,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580968,
+    "items" : [ ]
+  }, {
+    "nodetitle" : "《世界科技文明史》延伸阅读资料选编",
+    "preview" : 0,
+    "orderindex" : 9,
+    "qrcode" : 0,
+    "isuserful" : "1",
+    "published" : 1,
+    "nodeid" : 2580969,
+    "items" : [ ]
+  } ],
+  "showType" : 1,
+  "courseid" : 55772
+}

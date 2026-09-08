@@ -1,0 +1,193 @@
+<!doctype html>
+<!--[if lte IE 9]> <html class="no-js lte-ie9" lang="zh-CN"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="zh-CN">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit"/>
+  <meta name="force-rendering" content="webkit"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <title>Ulearning</title>
+  <meta name="description" content="优学院门户">
+  <meta name="author" content="wenhua">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+  <link type="favicon" rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="../common/css/normalize.css">
+  <link rel="stylesheet" href="../common/vendor/bootstrap-3.3.7/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="../common/fonts/iconfont.css"> -->
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1894268_wq167o5qwbk.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/c/font_2767280_qghueh29m1g.css">
+  <link rel="stylesheet" href="../common/font94850/iconfont.css">
+  
+  <link rel="stylesheet" href="../common/vendor/perfect-scrollbar-0.8.1/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="../common/vendor/loaders.css-0.1.2/loaders.min.css">
+  <link rel="stylesheet" href="../common/component/fileSelector/fileSelector.css">
+  <link rel="stylesheet" href="../common/vendor/Jcrop-2.0.4/css/Jcrop.min.css">
+  <link rel="stylesheet" href="../common/vendor/cropper/cropper.min.css">
+  <link rel="stylesheet" href="../common/vendor/Swiper-2.7.6/idangerous.swiper.min.css">
+  <link rel="stylesheet" href="../common/vendor/pagination/style/pagination.css">
+  <link rel="stylesheet" href="../common/vendor/My97DatePicker/skin/WdatePicker.css">
+  <link rel="stylesheet" href="../common/vendor/bootstrap-datetimepicker-4.17.47/css/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="../common/css/main.css">
+  <link rel="stylesheet" href="../common/css/common.css?version=1.4.12">
+  <link rel="stylesheet" href="./index.css">
+  <link rel="stylesheet" href="../common/css/english.css?ver=1">
+  <link href='../common/vendor/fullcalendar-4.4.0/core/main.css' rel='stylesheet' />
+  <link href='../common/vendor/fullcalendar-4.4.0/daygrid/main.css' rel='stylesheet' />
+  <link href='../common/vendor/fullcalendar-4.4.0/timegrid/main.css' rel='stylesheet' />
+  <link href='../common/vendor/wPaint/wPaint-min.css' rel='stylesheet' />
+    <!-- js全局配置文件 -->
+  <script src="../common/js/config.js"></script>
+
+  <script src="../common/vendor/fullcalendar-4.4.0/core/main.js"></script>
+  <script src="../common/vendor/fullcalendar-4.4.0/daygrid/main.js"></script>
+  <script src="../common/vendor/fullcalendar-4.4.0/interaction/main.min.js"></script>
+  <script src="../common/vendor/fullcalendar-4.4.0/moment/main.min.js"></script>
+  <script src="../common/vendor/fullcalendar-4.4.0/list/main.min.js"></script>
+  <script src="../common/vendor/fullcalendar-4.4.0/timegrid/main.min.js"></script>
+  <script src="../common/vendor/fullcalendar-4.4.0/core/locales-all.min.js"></script>
+ <script src="../common/vendor/jsSHA/jsSHA.js"></script>
+  
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="../common/vendor/html5shiv-3.7.3/html5shiv.min.js"></script>
+    <script src="../common/vendor/respond-1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div data-bind="css: {'has-hover':addHover() == 1},component: {
+    name: 'ko-view',
+    params: { routingRules: routingRules }
+  }"></div>
+  <div class="login-loading-wrapper">
+    <div class="loading">
+      <div class="loader">
+        <div class="loader-inner line-scale-pulse-out">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- js 资源文件 -->
+  <script src="../common/vendor/cordova/cordova_init.js" async></script>
+  <script src="../common/vendor/modernizr-2.8.3/modernizr.min.js"></script>
+  <!-- 解压缩压缩包 -->
+  <script src="../common/vendor/jquery-3.4.1/jquery.min.js"></script>
+
+  <script src="../common/vendor/pako-1.0.10/pako.min.js"></script>
+  <script src="../common/vendor/jquery-1.12.4/jquery.min.js"></script>
+  <!-- 下载证书 -->
+  <script type="text/javascript" src="../common/vendor/html2canvas/html2canvas.min.js"></script>
+  <script type="text/javascript" src="../common/vendor/jsPDF-1.3.5/dist/jspdf.min.js"></script>
+  <!-- 导出pdf -->
+  <script type="text/javascript" src="../common/vendor/exportPdf/canvg/rgbcolor.min.js"></script>
+  <script type="text/javascript" src="../common/vendor/exportPdf/canvg/stackblur.min.js"></script>
+  <script type="text/javascript" src="../common/vendor/exportPdf/canvg/canvg.min.js"></script>
+  <script src="../common/vendor/exportPdf/canvas2image.js"></script>
+  <script src="../common/vendor/jquery-ajaxtransport-xdomainrequest-1.0.4/jQuery.XDomainRequest.js"></script>
+  <script src="../common/vendor/wPaint/wPaint-min.js"></script>
+  <!-- <script>
+    window.jQuery || document.write('<script src="../common/vendor/jquery-1.12.4/jquery.min.js"><\/script>')
+  </script> -->
+  <script src="../common/vendor/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+  <script src="../common/vendor/bootstrap-3.3.7/js/bootstrap-hover-dropdown.js"></script>
+  <script src="../common/vendor/perfect-scrollbar-0.8.1/js/perfect-scrollbar.jquery.min.js"></script>
+  <script src="../common/vendor/Jcrop-2.0.4/js/Jcrop.min.js"></script>
+  <script src="../common/vendor/pagination/script/jquery.pagination.js"></script>
+  <script src="../common/vendor/sortable-1.6.0/Sortable.js"></script>
+  <script src="../common/vendor/My97DatePicker/WdatePicker.js"></script>
+  <script src="../common/vendor/moment.js-2.22.1/moment.min.js"></script>
+  <script src="../common/vendor/moment.js-2.22.1/moment-with-locales.min.js"></script>
+  <script src="../common/vendor/bootstrap-datetimepicker-4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="../common/vendor/cropper/cropper.min.js"></script>
+  <script src="../common/vendor/face/pico.min.js"></script>
+  <script src="../common/vendor/face/canvas.js"></script>
+  <!-- <script src="../common/vendor/vConsole-dev/dist/vconsole.min.js"></script> -->
+  <!-- <script src="http://192.168.1.98:7700/target/target-script-min.js#anonymous" type="text/javascript"></script> -->
+  <script src="../common/vendor/plupload/moxie.min.js"></script>
+  <script src="../common/vendor/plupload/plupload.full.min.js"></script>
+  <script src="../common/vendor/plupload/i18n/zh_CN.js"></script>
+  <script src="../common/vendor/qiniu/qiniu.min.js"></script>
+  <!-- <script src="../common/vendor/ulearning-obs/obs-huawei.js"></script> -->
+  <script src="../common/vendor/jwplayer/jwplayer-latest.js"></script>
+  <script src="../common/vendor/jwplayer/jwplayer.html5.js"></script>
+  <script src="../common/vendor/jwplayer/jwpsrv.js"></script>
+  <!-- <script src="../common/vendor/datepicker/js/plugins/moment.min.js"></script> -->
+  <script src="../common/vendor/datepicker/js/datepicker.all.js"></script>
+  <script src="../common/vendor/jquery-circle-progress-1.2.2/circle-progress.min.js"></script>
+  <script src="../common/vendor/highcharts-6.0.4/highstock.js"></script>
+  <!-- <script src="../common/vendor/moment.js-2.22.1/locale/tw.js"></script>
+  <script src="../common/vendor/moment.js-2.22.1/locale/id.js"></script>
+  <script src="../common/vendor/moment.js-2.22.1/locale/zh.js"></script> -->
+  <!--[if lt IE 9]>
+  <script src="../common/vendor/highcharts-6.0.4/modules/oldie.js"></script>
+  <![endif]-->
+  <script src="../common/vendor/Swiper-2.7.6/idangerous.swiper.min.js"></script>
+  <!-- <script src="//connect.qq.com/widget/loader/loader.js" widget="shareqq" charset="utf-8"></script>
+  <script src="//qzonestyle.gtimg.cn/qzone/app/qzlike/qzopensl.js#jsdate=20111201" charset="utf-8"></script> -->
+  <script src="../common/vendor/jquery-validate-1.17.0/jquery.validate.min.js"></script>
+  <script src="../common/vendor/jquery.qrcode-1.0/jquery.qrcode.min.js"></script>
+  <script src="../common/vendor/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script src="../common/vendor/DOMPurify-2.0.10/purify.min.js"></script>
+  <script src="https://qzonestyle.gtimg.cn/qzone/qzact/common/share/share.js"></script>
+  <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+  <script src="../common/js/plugins.js"></script>
+  <script data-main="./init.js?version=1.4.44" src="../common/vendor/require.js-2.3.5/require.min.js"></script>
+  <script src="//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+
+  <script>
+    if (typeof asiaVersion === 'boolean' && !asiaVersion) {
+      setTimeout(function () {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.id = "xiaonengjs";
+        script.src = "//visitor.ntalker.com/visitor/js/xiaoneng.js?siteid=kf_20125";
+        script.async = "async";
+        document.body.appendChild(script);
+      }, 1000);
+      // 国家智慧职教平台埋点
+      (function(w, d, s, q) { 
+        w[q] =w[q] || []; 
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s); 
+        j.async=true; 
+        j.id='beacon-aplus'; 
+        j.src='https://d.alicdn.com/alilog/mlog/aplus/204458013.js'; 
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'aplus_queue');
+
+      //集成应用的appKey
+      aplus_queue.push({ action: 'aplus.setMetaInfo', arguments: ['appKey', 't36mrxdp2sl7n4b5o7snaqb9']  }) 
+
+      //添加日志域名埋点
+      aplus_queue.push({ action: 'aplus.setMetaInfo', arguments: ['aplus-rhost-v', 'qtedu.om.moe.edu.cn']  });
+    }
+
+    // Markdown resources use MathJax to typeset TeX formulas.
+    var mathJaxSite = 'www.tongshike.cn'
+    var mathJaxHostname = location.hostname
+    var mathJaxParts = mathJaxHostname.split('.')
+    var mathJaxSecondLevel = mathJaxParts[mathJaxParts.length - 2]
+    if (mathJaxSecondLevel && (mathJaxSecondLevel.startsWith('ulearning') || mathJaxSecondLevel.startsWith('zambialearning'))) {
+      mathJaxSite = 'static.' + mathJaxParts.slice(-2).join('.')
+    }
+    var mathJaxScript = document.createElement('script')
+    mathJaxScript.src = 'https://' + mathJaxSite + '/static/3rdlib/mathjax-2.7.5/MathJax.js?config=TeX-MML-AM_SVG'
+    document.body.appendChild(mathJaxScript)
+  </script>
+</body>
+
+</html>
+<style>
+  .uclass-inner .uclass-inner-hidden{
+    display: none !important;
+  }
+</style>

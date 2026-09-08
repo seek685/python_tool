@@ -1,0 +1,19 @@
+{
+  "completion_status" : 1,
+  "learner_id" : 13962074,
+  "learner_name" : "李炜成",
+  "relationid" : 1145935786,
+  "customized" : 0,
+  "activity_title" : "《共产党宣言》",
+  "item_id" : 1845889,
+  "node_id" : 2492411,
+  "score" : 0,
+  "studyTime" : 600,
+  "pageStudyRecordDTOList" : [ {
+    "pageid" : 4809637,
+    "complete" : 1,
+    "submitTimes" : 0,
+    "studyTime" : 600,
+    "answerTime" : 1
+  } ]
+}
