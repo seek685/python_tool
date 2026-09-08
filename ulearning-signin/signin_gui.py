@@ -14,7 +14,6 @@
 换号测试: 直接改输入, 再点一次"开始监听"即可, 无需先停止。
 """
 
-import hashlib
 import json
 import os
 import queue
@@ -22,11 +21,13 @@ import re
 import threading
 import time
 import tkinter as tk
+import urllib.parse
 from tkinter import scrolledtext, ttk
 
 import requests
 
 BASE = "https://application.dgut.edu.cn/classroomapi"
+LOGIN_URL = "https://application.dgut.edu.cn/appapi/user/login/app"  # 学校应用中心登录(明文密码)
 POLL_INTERVAL = 3
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            "signin_gui_config.json")
@@ -34,7 +35,8 @@ CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 NOTICE = """注意事项:
 1. 本工具仅用于老师发布的签到破解测试, 请勿用于真实课程考勤。
 2. 两种登录方式二选一 (都填则优先用 Token):
-   A. 账号+密码: 账号填学号(自动补 dgut 前缀)或手机号, 密码是优学院 APP 的密码;
+   A. 账号+密码: 账号填学号(自动补 dgut 前缀)或手机号, 密码就是登录
+      application.dgut.edu.cn 应用中心网页用的那个密码;
    B. Token+userId: 浏览器 F12 -> Network 找 getAttendanceForStu/xxx/yyy 请求,
       请求头 AUTHORIZATION 的值是 Token, URL 第二段 yyy 是 userId。
 3. 课堂 URL 从浏览器地址栏直接复制粘贴 (含 classroomId 的整段链接)。
@@ -62,30 +64,36 @@ class SigninAPI:
         }
 
     def login(self, username, password):
-        md5pw = hashlib.md5(password.encode("utf-8")).hexdigest()
-        # 学号需要 dgut 前缀; 先按原样试, 报"用户不存在"再自动补前缀重试
-        data = {}
-        name = username
-        for name in (username, f"dgut{username}" if not username.lower().startswith("dgut") else username):
-            payload = {
-                "loginName": name,
-                "password": md5pw,
-                "device": "pc", "appVersion": "36", "webEnv": "1",
-            }
-            r = self.session.post(f"{BASE}/users/login", headers=self._headers(),
-                                  json=payload, timeout=10)
-            data = r.json()
-            if "用户不存在" in str(data.get("message")) and name == username:
-                continue  # 补前缀再试
-            break
-        res = data.get("result") or {}
-        token = res.get("authorization") or res.get("token") or data.get("token")
-        uid = res.get("userId") or res.get("userID") or data.get("userId")
-        if not token:
-            return False, f"登录失败: {json.dumps(data, ensure_ascii=False)}"
-        self.token = token
-        self.user_id = str(uid or self.user_id)
-        return True, f"登录成功 (账号 {name}, userId={self.user_id})"
+        """学校应用中心登录: 明文密码表单 POST, 成功种 AUTHORIZATION cookie。
+        学号自动补 dgut 前缀; userId 从 USER_INFO cookie 解析。"""
+        if username.isdigit():
+            names = [f"dgut{username}"] if not username.lower().startswith("dgut") else [username]
+        else:
+            names = [username]
+        for name in names:
+            self.session.cookies.clear()
+            self.session.post(
+                LOGIN_URL,
+                data={"loginName": name, "password": password, "alias": "application"},
+                headers={"User-Agent": "Mozilla/5.0 Chrome/126.0"},
+                timeout=10, allow_redirects=False)
+            token = self.session.cookies.get("AUTHORIZATION")
+            if token:
+                self.token = token
+                raw = urllib.parse.unquote(
+                    self.session.cookies.get("USER_INFO")
+                    or self.session.cookies.get("USERINFO") or "")
+                # cookie 里汉字是 %uXXXX 形式, 转回正常字符
+                raw = re.sub(r"%u([0-9a-fA-F]{4})",
+                             lambda m: chr(int(m.group(1), 16)), raw)
+                m = re.search(r'"userId"\s*:\s*"?(\d+)"?', raw)
+                self.user_id = m.group(1) if m else ""
+                nm = re.search(r'"name"\s*:\s*"([^"]*)"', raw)
+                uname = nm.group(1) if nm else ""
+                if not self.user_id:
+                    return False, "登录成功但解析 userId 失败, 请改用 Token 方式"
+                return True, f"登录成功 (账号 {name}, 姓名 {uname}, userId={self.user_id})"
+        return False, "登录失败: 账号或密码错误 (连续失败会锁定账号, 请确认密码后再试)"
 
     def activities(self, cid):
         r = self.session.get(f"{BASE}/wisdomClassroom/getClassroomActivitys/{cid}",
