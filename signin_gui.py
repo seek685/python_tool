@@ -21,6 +21,7 @@ import json
 import os
 import queue
 import re
+import tempfile
 import threading
 import time
 import tkinter as tk
@@ -34,6 +35,8 @@ LOGIN_URL = "https://application.dgut.edu.cn/appapi/user/login/app"  # 学校应
 POLL_INTERVAL = 3
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            "signin_gui_config.json")
+LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "signin_gui.log")
 
 NOTICE = """注意事项:
 1. 本工具仅用于老师发布的签到破解测试, 请勿用于真实课程考勤。
@@ -102,16 +105,19 @@ class SigninAPI:
     def activities(self, cid):
         r = self.session.get(f"{BASE}/wisdomClassroom/getClassroomActivitys/{cid}",
                              headers=self._headers(), timeout=10)
+        r.raise_for_status()
         return r.json() if r.text else None
 
     def attendance_info(self, aid):
         r = self.session.get(f"{BASE}/newAttendance/getAttendanceForStu/{aid}/{self.user_id}",
                              headers=self._headers(), timeout=10)
+        r.raise_for_status()
         return r.json() if r.text else None
 
     def fetch_code(self, aid):
         r = self.session.get(f"{BASE}/newAttendance/getAttendanceDataCode/{aid}",
                              headers=self._headers(), timeout=10)
+        r.raise_for_status()
         return r.text.strip()
 
     def sign(self, aid, code=""):
@@ -119,7 +125,8 @@ class SigninAPI:
                    "location": "", "enterWay": 1, "attendanceCode": code}
         r = self.session.post(f"{BASE}/newAttendance/signByStu",
                               headers=self._headers(), json=payload, timeout=10)
-        return r.json() if r.text else None  # None = 被限流
+        r.raise_for_status()
+        return r.json() if r.text else None
 
 
 def parse_ids(text):
@@ -148,9 +155,16 @@ class App(tk.Tk):
         self.stop_event = threading.Event()
         self.worker = None
         self.accounts = {}  # {账号: 密码}
+        self._save_timer = None
+        self._log_lock = threading.Lock()
 
         self._build_widgets()
         self._load_config()
+        for widget in (self.cmb_user, self.ent_pass, self.ent_token,
+                       self.ent_userid, self.ent_url):
+            widget.bind("<KeyRelease>", self._schedule_save, add="+")
+            widget.bind("<FocusOut>", self._schedule_save, add="+")
+        self.protocol("WM_DELETE_WINDOW", self._on_close)
         self.after(200, self._drain_queues)
 
     # ---------- 界面 ----------
@@ -218,11 +232,29 @@ class App(tk.Tk):
             return
         self.accounts[name] = pwd
         self.cmb_user.configure(values=sorted(self.accounts))
-        self._save_config()
-        self.log(f"账号 {name} 已保存到本机配置")
+        if self._save_config():
+            self.log(f"账号 {name} 已保存到本机配置")
 
     def log(self, msg):
-        self.log_queue.put(f"[{time.strftime('%H:%M:%S')}] {msg}")
+        now = time.localtime()
+        self.log_queue.put(f"[{time.strftime('%H:%M:%S', now)}] {msg}")
+        try:
+            with self._log_lock, open(LOG_FILE, "a", encoding="utf-8") as f:
+                f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S', now)}] {msg}\n")
+        except OSError:
+            pass
+
+    def _schedule_save(self, _event=None):
+        if self._save_timer is not None:
+            self.after_cancel(self._save_timer)
+        self._save_timer = self.after(500, self._save_config)
+
+    def _on_close(self):
+        if self._save_timer is not None:
+            self.after_cancel(self._save_timer)
+        if self._save_config():
+            self.stop_event.set()
+            self.destroy()
 
     def _drain_queues(self):
         while True:
@@ -271,18 +303,36 @@ class App(tk.Tk):
         self.ent_url.insert(0, cfg.get("url", ""))
 
     def _save_config(self):
+        self._save_timer = None
+        username = self.cmb_user.get().strip()
+        password = self.ent_pass.get()
+        if username and password:
+            self.accounts[username] = password
+            self.cmb_user.configure(values=sorted(self.accounts))
         cfg = {
             "accounts": self.accounts,
-            "last_username": self.cmb_user.get().strip(),
+            "last_username": username,
             "token": self.ent_token.get().strip(),
             "userid": self.ent_userid.get().strip(),
             "url": self.ent_url.get().strip(),
         }
+        temp_path = None
         try:
-            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False,
+                                             dir=os.path.dirname(CONFIG_FILE)) as f:
+                temp_path = f.name
                 json.dump(cfg, f, ensure_ascii=False)
-        except OSError:
-            pass
+            os.replace(temp_path, CONFIG_FILE)
+            return True
+        except OSError as e:
+            self.log(f"保存配置失败: {e}")
+            return False
+        finally:
+            if temp_path and os.path.exists(temp_path):
+                try:
+                    os.unlink(temp_path)
+                except OSError:
+                    pass
 
     # ---------- 监听控制 ----------
     def start(self):
@@ -415,7 +465,8 @@ class App(tk.Tk):
                 stop_event.wait(1.2)
                 continue
             if res is None:
-                stop_event.wait(1.2)  # 被限流
+                self.log(f"    [{title}] 尝试{attempt + 1}: 提交接口返回空响应")
+                stop_event.wait(1.2)
                 continue
             st = res.get("status")
             self.log(f"    [{title}] 尝试{attempt + 1}: 码={code or '(空)'} 响应="
