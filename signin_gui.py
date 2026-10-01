@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-优学院智慧课堂 自动签到 - 图形界面版 (东莞理工 测试用)
-双击运行本文件 (需安装 Python 3, 并 pip install requests)
+优学院智慧课堂 - 本人课程签到发现与提醒
+双击运行本文件 (需安装 Python 3, 并 pip install requests)。
 
-原理: 平台接口 /newAttendance/getAttendanceDataCode/{id} 存在越权漏洞,
-学生 token 可直接读取当前签到码; 发现签到后自动取码并立即提交。
-签到码约 6 秒轮换一次, 提交接口有限流(约5秒一次), 程序会自动重试。
-
-使用(二选一):
-  A. 填 账号 + 密码 + 课堂URL -> 点"开始监听" (推荐, 登录全自动)
-  B. 填 Token + userId + 课堂URL -> 点"开始监听" (免密码, token 过期需重抓)
-
-多账号: 账号下拉框保存历史账号(密码一起存本机), 选人自动带出密码;
-        换了输入后点"存账号"即可入库; 开始监听永远用当前输入的账号,
-        换号 = 选人/改输入 -> 再点一次"开始监听" (无需先停止)。
+填账号和密码，点击“开始监听”，自动发现本人课堂的待签到活动，无需 URL。
+发现活动后在官方页面完成签到验证。
+账号保存在固定的用户数据目录，重启或更换脚本位置后仍可恢复。
 """
 
 import json
@@ -26,6 +18,7 @@ import threading
 import time
 import tkinter as tk
 import urllib.parse
+import webbrowser
 from tkinter import scrolledtext, ttk
 
 import requests
@@ -33,24 +26,50 @@ import requests
 BASE = "https://application.dgut.edu.cn/classroomapi"
 LOGIN_URL = "https://application.dgut.edu.cn/appapi/user/login/app"  # 学校应用中心登录(明文密码)
 POLL_INTERVAL = 3
-CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                           "signin_gui_config.json")
-LOG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "signin_gui.log")
+CLASSROOM_REFRESH_INTERVAL = 60
+PAGE_SIZE = 999
+DATA_DIR = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"),
+                        "UCollegeSignin")
+CONFIG_FILE = os.path.join(DATA_DIR, "signin_gui_config.json")
+LOG_FILE = os.path.join(DATA_DIR, "signin_gui.log")
+LEGACY_CONFIG_FILES = list(dict.fromkeys([
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "signin_gui_config.json"),
+    os.path.expanduser("~/signin_gui_config.json"),
+    os.path.expanduser("~/Desktop/signin_gui_config.json"),
+]))
 
-NOTICE = """注意事项:
-1. 本工具仅用于老师发布的签到破解测试, 请勿用于真实课程考勤。
-2. 两种登录方式二选一 (都填则优先用 Token):
-   A. 账号+密码: 账号填学号(自动补 dgut 前缀)或手机号, 密码就是登录
-      application.dgut.edu.cn 应用中心网页用的那个密码;
-   B. Token+userId: 浏览器 F12 -> Network 找 getAttendanceForStu/xxx/yyy 请求,
-      请求头 AUTHORIZATION 的值是 Token, URL 第二段 yyy 是 userId。
-3. 课堂 URL 从浏览器地址栏直接复制粘贴 (含 classroomId 的整段链接)。
-4. 点"开始监听"后保持窗口开着; 老师发起签到后程序自动取码并提交。
-5. 多账号: 下拉选人自动带出密码; 新账号点"存账号"入库; 换号后直接再点
-   "开始监听"即可切换 (无需先停止)。
-6. 签到码每约 6 秒轮换一次、提交接口有限流, 程序自动重试属正常现象。
-7. 请关闭代理/VPN, 程序需要直连 application.dgut.edu.cn。"""
+NOTICE = """使用说明:
+1. 填账号和密码，保留“自动发现本人课堂”勾选，点击“开始监听”。
+2. 自动刷新本人课程与进行中的课堂，无需 URL；新签到会显示在下方。
+3. 选中活动，点击“打开官方课堂”，在官方页面完成签到验证。
+4. 点“存账号”立即保存；关闭重开自动恢复，下拉框可切换已保存账号。
+5. 账号和密码保存在当前 Windows 用户的数据目录，各脚本副本共用。
+6. Token 登录需同时填写 userId；两种方式都填时优先使用 Token。"""
+
+
+class SessionExpired(Exception):
+    pass
+
+
+def normalize_config(cfg):
+    if not isinstance(cfg, dict):
+        raise ValueError("配置根节点应为对象")
+    accounts = cfg.get("accounts") or {}
+    if not isinstance(accounts, dict) or any(
+            not isinstance(k, str) or not isinstance(v, str) for k, v in accounts.items()):
+        raise ValueError("账号配置格式不正确")
+    cfg = dict(cfg, accounts=dict(accounts))
+    for key in ("username", "password", "last_username", "token", "userid", "url"):
+        if key in cfg and not isinstance(cfg[key], str):
+            raise ValueError("配置字段格式不正确")
+    if "auto_discover" in cfg and not isinstance(cfg["auto_discover"], bool):
+        raise ValueError("自动发现设置格式不正确")
+    legacy = cfg.get("username", "")
+    if legacy:
+        cfg["accounts"].setdefault(legacy, cfg.get("password", ""))
+    if not cfg.get("last_username"):
+        cfg["last_username"] = legacy or next(iter(cfg["accounts"]), "")
+    return cfg
 
 
 class SigninAPI:
@@ -102,31 +121,64 @@ class SigninAPI:
                 return True, f"登录成功 (账号 {name}, 姓名 {uname}, userId={self.user_id})"
         return False, "登录失败: 账号或密码错误 (连续失败会锁定账号, 请确认密码后再试)"
 
-    def activities(self, cid):
-        r = self.session.get(f"{BASE}/wisdomClassroom/getClassroomActivitys/{cid}",
+    def _get(self, path, params):
+        r = self.session.get(BASE + path, params=params,
                              headers=self._headers(), timeout=10)
+        if r.status_code == 401:
+            raise SessionExpired("登录已失效")
         r.raise_for_status()
-        return r.json() if r.text else None
+        data = r.json()
+        if not isinstance(data, dict):
+            raise ValueError("学生端接口返回格式不正确")
+        if str(data.get("code")) in ("2001", "2101", "401"):
+            raise SessionExpired("登录已失效")
+        return data
 
-    def attendance_info(self, aid):
-        r = self.session.get(f"{BASE}/newAttendance/getAttendanceForStu/{aid}/{self.user_id}",
-                             headers=self._headers(), timeout=10)
-        r.raise_for_status()
-        return r.json() if r.text else None
+    def _pages(self, path, params, key="list", nested=True,
+               page_key="pageNum", size_key="pageSize", stop_event=None):
+        page = 1
+        previous = None
+        while not (stop_event and stop_event.is_set()):
+            data = self._get(path, dict(params, **{page_key: page, size_key: PAGE_SIZE}))
+            data = data.get("result") if nested else data
+            if not isinstance(data, dict) or not isinstance(data.get(key), list):
+                raise ValueError("学生端列表格式不正确，请检查平台是否更新")
+            items = data[key]
+            if any(not isinstance(item, dict) for item in items):
+                raise ValueError("学生端列表项目格式不正确")
+            if items and items == previous:
+                raise ValueError("学生端返回重复分页，已停止本轮扫描")
+            yield from items
+            if len(items) < PAGE_SIZE:
+                return
+            previous = items
+            page += 1
 
-    def fetch_code(self, aid):
-        r = self.session.get(f"{BASE}/newAttendance/getAttendanceDataCode/{aid}",
-                             headers=self._headers(), timeout=10)
-        r.raise_for_status()
-        return r.text.strip()
+    def classrooms(self, stop_event):
+        rooms = {}
+        courses = self._pages("/courses/students",
+                              {"keyword": "", "publishStatus": 1, "type": 1},
+                              key="courseList", nested=False, page_key="pn", size_key="ps",
+                              stop_event=stop_event)
+        for course in courses:
+            if stop_event.is_set():
+                break
+            ocid = course.get("id")
+            if not str(ocid).isdigit():
+                raise ValueError("课程缺少有效编号")
+            # 参数与官方学生端 ClassroomList 保持一致。
+            for room in self._pages("/wisdomClassroom/student/getClassroomList",
+                                    {"ocId": ocid, "teacherId": self.user_id,
+                                     "status": 0, "order": 0}, stop_event=stop_event):
+                cid = room.get("id")
+                if str(cid).isdigit() and str(room.get("status")) == "0":
+                    rooms[int(cid)] = dict(room, id=int(cid), ocId=ocid,
+                                          course_name=course.get("name") or str(ocid))
+        return list(rooms.values())
 
-    def sign(self, aid, code=""):
-        payload = {"attendanceID": aid, "classID": -1, "userID": self.user_id,
-                   "location": "", "enterWay": 1, "attendanceCode": code}
-        r = self.session.post(f"{BASE}/newAttendance/signByStu",
-                              headers=self._headers(), json=payload, timeout=10)
-        r.raise_for_status()
-        return r.json() if r.text else None
+    def activities(self, cid, stop_event):
+        return self._pages("/wisdomClassroom/student/classroomActivitys",
+                           {"classroomId": cid}, stop_event=stop_event)
 
 
 def parse_ids(text):
@@ -146,9 +198,9 @@ def parse_ids(text):
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("优学院智慧课堂自动签到 (测试版)")
-        self.geometry("680x660")
-        self.minsize(640, 640)
+        self.title("优学院签到发现与提醒")
+        self.geometry("780x760")
+        self.minsize(720, 700)
 
         self.log_queue = queue.Queue()
         self.ctrl_queue = queue.Queue()  # 工作线程 -> UI 线程的控制消息
@@ -157,6 +209,9 @@ class App(tk.Tk):
         self.accounts = {}  # {账号: 密码}
         self._save_timer = None
         self._log_lock = threading.Lock()
+        self._config_load_failed = False
+        self.auto_discover = tk.BooleanVar(self, value=True)
+        self.pending_urls = {}
 
         self._build_widgets()
         self._load_config()
@@ -193,9 +248,13 @@ class App(tk.Tk):
         self.ent_userid = ttk.Entry(row1b, width=10)
         self.ent_userid.pack(side=tk.LEFT, padx=4)
 
+        ttk.Checkbutton(frm, text="自动发现本人课堂（无需 URL）",
+                        variable=self.auto_discover,
+                        command=self._schedule_save).pack(anchor=tk.W, pady=3)
+
         row2 = ttk.Frame(frm)
         row2.pack(fill=tk.X, pady=2)
-        ttk.Label(row2, text="课堂URL:").pack(side=tk.LEFT)
+        ttk.Label(row2, text="指定课堂（选填）:").pack(side=tk.LEFT)
         self.ent_url = ttk.Entry(row2)
         self.ent_url.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=4)
 
@@ -211,6 +270,16 @@ class App(tk.Tk):
         ttk.Label(frm, text=NOTICE, justify=tk.LEFT, foreground="#8a5a00").pack(
             fill=tk.X, pady=(4, 6))
 
+        self.activity_tree = ttk.Treeview(frm, columns=("course", "title"),
+                                          show="headings", height=4)
+        self.activity_tree.heading("course", text="课程")
+        self.activity_tree.heading("title", text="发现的待签到活动")
+        self.activity_tree.column("course", width=230)
+        self.activity_tree.column("title", width=350)
+        self.activity_tree.pack(fill=tk.X, pady=4)
+        ttk.Button(frm, text="打开官方课堂", command=self.open_activity).pack(anchor=tk.W)
+        self.activity_tree.bind("<Double-1>", self.open_activity)
+
         self.txt_log = scrolledtext.ScrolledText(frm, height=13, state=tk.DISABLED,
                                                  font=("Consolas", 9))
         self.txt_log.pack(fill=tk.BOTH, expand=True)
@@ -223,6 +292,7 @@ class App(tk.Tk):
             self.ent_pass.delete(0, tk.END)
             self.ent_pass.insert(0, pwd)
             self.log(f"已切到账号 {name}, 点'开始监听'即用该号监听")
+        self._schedule_save()
 
     def remember_account(self):
         name = self.cmb_user.get().strip()
@@ -239,6 +309,7 @@ class App(tk.Tk):
         now = time.localtime()
         self.log_queue.put(f"[{time.strftime('%H:%M:%S', now)}] {msg}")
         try:
+            os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
             with self._log_lock, open(LOG_FILE, "a", encoding="utf-8") as f:
                 f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S', now)}] {msg}\n")
         except OSError:
@@ -271,39 +342,70 @@ class App(tk.Tk):
                 ctrl = self.ctrl_queue.get_nowait()
             except queue.Empty:
                 break
-            if ctrl == "STOP":
+            run, action, payload = ctrl
+            if run is not self.stop_event:
+                continue
+            if action == "STOP":
                 self.stop()
+            elif action == "FOUND" and not run.is_set():
+                room, title, aid = payload
+                iid = f"{room['id']}:{aid}"
+                if not self.activity_tree.exists(iid):
+                    self.activity_tree.insert("", tk.END, iid=iid,
+                                              values=(room["course_name"], title))
+                    query = urllib.parse.urlencode(
+                        {"classroomId": room["id"], "ocId": room["ocId"]})
+                    self.pending_urls[iid] = (
+                        "https://application.dgut.edu.cn/classroom/student.html?" + query)
+                    self.bell()
         self.after(200, self._drain_queues)
 
     def _load_config(self):
-        try:
-            with open(CONFIG_FILE, encoding="utf-8") as f:
-                cfg = json.load(f)
-        except (OSError, ValueError):
+        self._config_load_failed = False
+        cfg = None
+        sources = []
+        # 固定目录优先；第一次运行时才合并已知旧副本的配置。
+        for path in [CONFIG_FILE] + LEGACY_CONFIG_FILES:
+            try:
+                with open(path, encoding="utf-8-sig") as f:
+                    loaded = normalize_config(json.load(f))
+            except FileNotFoundError:
+                continue
+            except (OSError, ValueError) as e:
+                self.log(f"读取配置失败: {path} ({e})")
+                if path == CONFIG_FILE:
+                    self._config_load_failed = True
+                    return  # 不用空配置覆盖原文件。
+                continue
+            if path == CONFIG_FILE:
+                cfg = loaded
+                break
+            if cfg is None:
+                cfg = loaded
+            else:
+                for name, password in loaded["accounts"].items():
+                    cfg["accounts"].setdefault(name, password)
+            sources.append(path)
+        if cfg is None:
             return
-        self.accounts = cfg.get("accounts") or {}
+        self.accounts = cfg["accounts"]
         self.cmb_user.configure(values=sorted(self.accounts))
         last = cfg.get("last_username", "")
-        if last:
-            self.cmb_user.insert(0, last)  # combobox 空值时 insert 无效, 用 set
         self.cmb_user.set(last)
-        if last in self.accounts:
-            self.ent_pass.insert(0, self.accounts[last])
-        # 兼容旧版单账号配置
-        legacy_user = cfg.get("username", "")
-        if legacy_user and legacy_user not in self.accounts:
-            self.accounts[legacy_user] = cfg.get("password", "")
-            self.cmb_user.configure(values=sorted(self.accounts))
-            if not last:
-                self.cmb_user.set(legacy_user)
-                self.ent_pass.delete(0, tk.END)
-                self.ent_pass.insert(0, self.accounts[legacy_user])
+        self.ent_pass.insert(0, self.accounts.get(last, ""))
         self.ent_token.insert(0, cfg.get("token", ""))
         self.ent_userid.insert(0, cfg.get("userid", ""))
         self.ent_url.insert(0, cfg.get("url", ""))
+        self.auto_discover.set(cfg.get("auto_discover", True))
+        if sources and self._save_config():
+            self.log(f"已迁移旧配置，恢复 {len(self.accounts)} 个账号")
+        self.log(f"配置位置: {CONFIG_FILE}")
 
     def _save_config(self):
         self._save_timer = None
+        if self._config_load_failed:
+            self.log("配置未能读取，已停止写入以保护原账号数据；请检查配置文件")
+            return False
         username = self.cmb_user.get().strip()
         password = self.ent_pass.get()
         if username and password:
@@ -315,13 +417,17 @@ class App(tk.Tk):
             "token": self.ent_token.get().strip(),
             "userid": self.ent_userid.get().strip(),
             "url": self.ent_url.get().strip(),
+            "auto_discover": self.auto_discover.get(),
         }
         temp_path = None
         try:
+            os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
             with tempfile.NamedTemporaryFile("w", encoding="utf-8", delete=False,
                                              dir=os.path.dirname(CONFIG_FILE)) as f:
                 temp_path = f.name
                 json.dump(cfg, f, ensure_ascii=False)
+                f.flush()
+                os.fsync(f.fileno())
             os.replace(temp_path, CONFIG_FILE)
             return True
         except OSError as e:
@@ -334,6 +440,20 @@ class App(tk.Tk):
                 except OSError:
                     pass
 
+    def open_activity(self, _event=None):
+        selected = self.activity_tree.selection()
+        if not selected:
+            self.log("请先选择一个已发现的签到活动")
+            return
+        url = self.pending_urls.get(selected[0])
+        if url:
+            try:
+                opened = webbrowser.open(url)
+            except webbrowser.Error:
+                opened = False
+            self.log("已打开官方课堂；如有提示请在浏览器登录"
+                     if opened else f"无法打开浏览器，请访问: {url}")
+
     # ---------- 监听控制 ----------
     def start(self):
         username = self.cmb_user.get().strip()
@@ -341,9 +461,9 @@ class App(tk.Tk):
         token = self.ent_token.get().strip()
         userid = self.ent_userid.get().strip()
         url = self.ent_url.get().strip()
-        cid, _ = parse_ids(url)
-        if not cid:
-            self.log("请粘贴含 classroomId 的课堂 URL")
+        cid, _ = (None, None) if self.auto_discover.get() else parse_ids(url)
+        if not self.auto_discover.get() and not cid:
+            self.log("请勾选自动发现，或填写含 classroomId 的课堂 URL")
             return
         if token and not userid:
             self.log("用 Token 方式需要同时填 userId (见注意事项第 2 条)")
@@ -355,11 +475,15 @@ class App(tk.Tk):
         if username and password:
             self.accounts[username] = password
             self.cmb_user.configure(values=sorted(self.accounts))
-        self._save_config()
+        if not self._save_config():
+            return
 
         # 每次都用当前输入重新开始; 正在监听则自动停掉旧的 —— 换号直接改完再点即可
         self.stop_event.set()
         self.stop_event = threading.Event()
+        for item in self.activity_tree.get_children():
+            self.activity_tree.delete(item)
+        self.pending_urls.clear()
         api = SigninAPI()
         api.token = token
         api.user_id = userid
@@ -370,9 +494,9 @@ class App(tk.Tk):
         self.worker.start()
         self.btn_stop.configure(state=tk.NORMAL)
         who = f"Token(userId={userid})" if token else f"账号 {username}"
-        self.lbl_status.configure(text=f"状态: 监听中 (课堂 {cid}, {who})",
-                                  foreground="#0a0")
-        self.log(f"开始监听课堂 {cid}, 使用 {who} ...")
+        scope = f"课堂 {cid}" if cid else "自动发现本人课堂"
+        self.lbl_status.configure(text=f"状态: {scope}", foreground="#0a0")
+        self.log(f"开始监听 ({scope}), 使用 {who} ...")
 
     def stop(self):
         self.stop_event.set()
@@ -381,104 +505,85 @@ class App(tk.Tk):
         self.log("已停止监听")
 
     def _monitor_loop(self, cid, username, password, api, stop_event):
-        password_mode = bool(username and password)
-        if not api.token:
-            if not password_mode:
-                self.log("Token 为空且未填账号密码, 无法登录")
-                self.ctrl_queue.put("STOP")
-                return
-            try:
+        password_mode = not api.token and bool(username and password)
+        try:
+            if password_mode:
                 ok, msg = api.login(username, password)
-            except requests.RequestException as e:
-                self.log(f"登录请求异常: {e}, 请检查网络后重新开始")
-                self.ctrl_queue.put("STOP")
-                return
-            self.log(msg)
-            if not ok:
-                self.ctrl_queue.put("STOP")
-                return
-        else:
-            self.log(f"使用 Token 方式, 当前账号 userId={api.user_id}")
-
-        done = set()
-        polls = 0
-        while not stop_event.is_set():
-            try:
-                data = api.activities(cid)
-                if isinstance(data, dict) and data.get("code") in (2001, 2101):
-                    if password_mode:
-                        self.log("token 过期, 自动重新登录 ...")
-                        ok, msg = api.login(username, password)
-                        self.log(msg)
-                        if not ok:
-                            self.ctrl_queue.put("STOP")
-                            return
-                        continue
-                    self.log("Token 已失效, 请重新抓 AUTHORIZATION 填入后再开始")
-                    self.ctrl_queue.put("STOP")
+                self.log(msg)
+                if not ok:
                     return
-                for item in (data or {}).get("list", []):
-                    aid = item.get("id")
-                    if item.get("relationType") != 1 or aid in done:
-                        continue
-                    title = item.get("title", "")
-                    if item.get("status") != 0:
-                        self.log(f"[{title}] 活动已结束, 跳过")
-                        done.add(aid)
-                        continue
-                    info = api.attendance_info(aid)
-                    if info is None:
-                        continue
-                    if not isinstance(info, dict) or "attendanceID" not in info:
-                        self.log(f"[{title}] 查询签到状态失败: "
-                                 f"{json.dumps(info, ensure_ascii=False)[:100]} (该账号可能没加入这个课堂)")
-                        done.add(aid)
-                        continue
-                    if info.get("status") != 0:
-                        self.log(f"[{title}] 该账号已是已签到状态, 跳过")
-                        done.add(aid)
-                        continue
-                    self.log(f"发现进行中的未签到活动: {title} (id={aid}), 立即签到 ...")
-                    self._crack_one(aid, title, api, stop_event)
-                    done.add(aid)
-                polls += 1
-                if polls % 20 == 0:
-                    self.log(f"监听中... 已轮询 {polls} 次 (课堂 {cid} 无新签到)")
-            except requests.RequestException as e:
-                self.log(f"网络异常: {e}")
-            except (ValueError, AttributeError) as e:
-                self.log(f"响应异常: {e}")
-            stop_event.wait(POLL_INTERVAL)
-        self.log("监听线程已退出")
+            elif not api.token:
+                self.log("未提供登录信息")
+                return
 
-    def _crack_one(self, aid, title, api, stop_event):
-        for attempt in range(10):
-            if stop_event.is_set():
-                return
-            try:
-                code = api.fetch_code(aid)
-                if not code.isdigit():
-                    code = ""  # 非数字码(如一键签到)直接空码提交
-                res = api.sign(aid, code)
-            except requests.RequestException as e:
-                self.log(f"    [{title}] 网络异常: {e}, 重试中")
-                stop_event.wait(1.2)
-                continue
-            if res is None:
-                self.log(f"    [{title}] 尝试{attempt + 1}: 提交接口返回空响应")
-                stop_event.wait(1.2)
-                continue
-            st = res.get("status")
-            self.log(f"    [{title}] 尝试{attempt + 1}: 码={code or '(空)'} 响应="
-                     f"{json.dumps(res, ensure_ascii=False)}")
-            if st == 200:
-                self.log(f"★ [{title}] 签到成功!")
-                return
-            if st == 202:
-                self.log(f"    [{title}] 活动已结束")
-                return
-            stop_event.wait(1.2)
-        self.log(f"    [{title}] 多次重试仍未成功")
+            rooms = []
+            refresh_at = 0
+            seen = set()
+            polls = 0
+            while not stop_event.is_set():
+                try:
+                    if time.monotonic() >= refresh_at:
+                        rooms = api.classrooms(stop_event)
+                        if cid:
+                            rooms = [room for room in rooms if room["id"] == cid]
+                        if stop_event.is_set():
+                            break
+                        self.log(f"已发现 {len(rooms)} 个本人进行中的课堂"
+                                 + ("；等待新课堂，每分钟刷新" if not rooms else ""))
+                        refresh_at = time.monotonic() + CLASSROOM_REFRESH_INTERVAL
+                    for room in rooms:
+                        if stop_event.is_set():
+                            break
+                        try:
+                            for item in api.activities(room["id"], stop_event):
+                                if stop_event.is_set():
+                                    break
+                                aid = item.get("relationId")
+                                if (str(item.get("relationType")) != "1"
+                                        or str(item.get("status")) != "0"
+                                        or str(item.get("state")) in ("1", "2")
+                                        or not str(aid).isdigit()):
+                                    continue
+                                key = (room["id"], str(aid))
+                                if key in seen:
+                                    continue
+                                seen.add(key)
+                                title = item.get("title") or "签到"
+                                self.log(f"发现待签到: {room['course_name']} / {title}，"
+                                         "请打开官方课堂完成验证")
+                                self.ctrl_queue.put((stop_event, "FOUND", (room, title, aid)))
+                        except requests.HTTPError as e:
+                            if e.response is None or e.response.status_code not in (403, 404):
+                                raise
+                            self.log(f"课堂 {room['id']} 已无访问权限或已删除，下轮刷新")
+                            refresh_at = 0
+                    polls += 1
+                    if polls % 20 == 0:
+                        self.log(f"监听中... 已轮询 {polls} 次")
+                except SessionExpired:
+                    if not password_mode:
+                        self.log("Token 已失效，请更新后重新开始")
+                        return
+                    self.log("登录已过期，重新登录 ...")
+                    ok, msg = api.login(username, password)
+                    self.log(msg)
+                    if not ok:
+                        return
+                    refresh_at = 0
+                except requests.RequestException as e:
+                    self.log(f"网络请求失败 ({type(e).__name__})，稍后重试")
+                except ValueError as e:
+                    self.log(f"响应异常: {e}")
+                    return
+                stop_event.wait(POLL_INTERVAL)
+        except requests.RequestException as e:
+            self.log(f"登录请求失败 ({type(e).__name__})，请检查网络后重新开始")
+        except ValueError as e:
+            self.log(f"登录响应异常: {e}")
+        finally:
+            api.session.close()
+            self.ctrl_queue.put((stop_event, "STOP", None))
+            self.log("监听线程已退出")
 
 
 if __name__ == "__main__":
